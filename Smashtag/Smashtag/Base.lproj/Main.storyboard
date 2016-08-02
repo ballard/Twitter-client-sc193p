@@ -81,7 +81,7 @@
                                     <outlet property="tweetCreatedLabel" destination="fcD-JY-AEm" id="IMz-p9-J46"/>
                                     <outlet property="tweetScreenNameLabel" destination="R4w-NG-AY6" id="zfp-Qu-8qU"/>
                                     <outlet property="tweetTextLabel" destination="fzh-DN-jxu" id="g7I-vg-lNP"/>
-                                    <segue destination="Uhl-VM-hyx" kind="show" identifier="Show Mentions" id="rmk-Vh-kQL"/>
+                                    <segue destination="hsD-1s-oDE" kind="show" identifier="Show Mention" id="meL-Qy-Mx8"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -132,7 +132,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKZ-uW-rqQ">
                                             <rect key="frame" x="8" y="11" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -160,7 +160,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gjg-OZ-FX1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3535" y="835"/>
+            <point key="canvasLocation" x="2711" y="835"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2GP-oF-Je7">
@@ -179,24 +179,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3NC-13-CtY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1201" y="835"/>
-        </scene>
-        <!--Tweet Mentions-->
-        <scene sceneID="JNq-vb-mrh">
-            <objects>
-                <navigationController title="Tweet Mentions" automaticallyAdjustsScrollViewInsets="NO" id="Uhl-VM-hyx" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1RK-IR-VBN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="hsD-1s-oDE" kind="relationship" relationship="rootViewController" id="Q5F-Ve-MoI"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IjA-62-jQf" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2782" y="835"/>
         </scene>
     </scenes>
 </document>
