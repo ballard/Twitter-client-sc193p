@@ -128,11 +128,10 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         // Pass the selected object to the new view controller.
         
         if let identifier = segue.identifier where identifier == Storyboard.ShowMentionSegueIdentifier{
-            if let cell = sender as? TweetTableViewCell{
-                let indexPath = tableView.indexPathForCell(cell)
-                if let seguedToMVC = segue.destinationViewController as? TweetMentionsTableViewController{
-                    seguedToMVC.tweets = tweets[indexPath!.section][indexPath!.row].hashtags
-                }
+            if let cell = sender as? TweetTableViewCell,
+                let indexPath = tableView.indexPathForCell(cell),
+                let seguedToMVC = segue.destinationViewController as? TweetMentionsTableViewController{
+                seguedToMVC.tweet = tweets[indexPath.section][indexPath.row]
             }
         }
     }

@@ -13,7 +13,8 @@ class TweetMentionsTableViewController: UITableViewController {
     
     
     // Model
-    var tweets = [Mention](){
+    
+    var tweet : Tweet?{
         didSet{
             tableView.reloadData()
         }
@@ -24,12 +25,12 @@ class TweetMentionsTableViewController: UITableViewController {
         static let TextCellIdentifier = "text"
     }
     
-    
-    
     // Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.estimatedRowHeight = tableView.rowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -44,28 +45,85 @@ class TweetMentionsTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
+    
+    // MARK: - Table view data source: UITableViewDataSource
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        switch section {
+        case 0:
+            return nil
+        case 1:
+            return "hashtags"
+        case 2:
+            return "users"
+        case 3:
+            return "urls"
+        default:
+            return nil
+        }
+    }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return tweets.count
+        return 4
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1
+        if let currentTweet = tweet{
+            switch section {
+            case 0:
+                return 0
+            case 1:
+                return currentTweet.hashtags.count
+            case 2:
+                return currentTweet.userMentions.count
+            case 3:
+                return currentTweet.urls.count
+            default:
+                return 0
+            }
+        } else {
+            return 0
+        }
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if tableView.numberOfRowsInSection(section) == 0 {
+            view.hidden = true
+        }
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.TextCellIdentifier, forIndexPath: indexPath)
 
         // Configure the cell...
         
-        let mention = tweets[indexPath.row]
-        if let tweetCell = cell as? TweetTextMentionTableViewCell{
-            tweetCell.mentionContent = String(mention)
-        }
-
+            switch indexPath.section {
+            case 0:
+                
+                break
+            case 1:
+                let mention = tweet?.hashtags[indexPath.row]
+                if let tweetCell = cell as? TweetTextMentionTableViewCell{
+                    tweetCell.mentionContent = mention!.keyword
+                }
+            case 2:
+                let mention = tweet?.userMentions[indexPath.row]
+                if let tweetCell = cell as? TweetTextMentionTableViewCell{
+                    tweetCell.mentionContent = mention!.keyword
+                }
+            case 3:
+                let mention = tweet?.urls[indexPath.row]
+                if let tweetCell = cell as? TweetTextMentionTableViewCell{
+                    tweetCell.mentionContent = mention!.keyword
+                }
+            default:
+                break
+            }
+        
         return cell
     }
     
