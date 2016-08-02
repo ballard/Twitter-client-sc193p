@@ -12,13 +12,21 @@ import Twitter
 class TweetMentionsTableViewController: UITableViewController {
     
     
-    //Model
+    // Model
     var tweets = [Mention](){
         didSet{
             tableView.reloadData()
         }
     }
     
+    // Constants
+    struct Storyboard {
+        static let TextCellIdentifier = "text"
+    }
+    
+    
+    
+    // Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,23 +47,28 @@ class TweetMentionsTableViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return tweets.count
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 1
     }
 
-    /*
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.TextCellIdentifier, forIndexPath: indexPath)
 
         // Configure the cell...
+        
+        let mention = tweets[indexPath.row]
+        if let tweetCell = cell as? TweetTextMentionTableViewCell{
+            tweetCell.mentionContent = String(mention)
+        }
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.

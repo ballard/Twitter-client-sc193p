@@ -94,6 +94,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     //Constants
     private struct Storyboard{
         static let TweetCellIdentifier = "Tweet"
+        static let ShowMentionSegueIdentifier = "Show Mention"
     }
     
     //Outlets
@@ -118,14 +119,21 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         tableView.rowHeight = UITableViewAutomaticDimension
     }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if let identifier = segue.identifier where identifier == Storyboard.ShowMentionSegueIdentifier{
+            if let cell = sender as? TweetTableViewCell{
+                let indexPath = tableView.indexPathForCell(cell)
+                if let seguedToMVC = segue.destinationViewController as? TweetMentionsTableViewController{
+                    seguedToMVC.tweets = tweets[indexPath!.section][indexPath!.row].hashtags
+                }
+            }
+        }
     }
-    */
-
 }

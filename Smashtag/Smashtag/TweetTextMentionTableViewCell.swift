@@ -20,5 +20,20 @@ class TweetTextMentionTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    
+    // Outlets
+    @IBOutlet weak var mentionText: UILabel!
+    
+    var mentionContent = "123"{
+        didSet{
+            updateUI()
+        }
+    }
+    
+    private func updateUI(){
+        mentionText.text = mentionContent
+    }
+    
 
 }
