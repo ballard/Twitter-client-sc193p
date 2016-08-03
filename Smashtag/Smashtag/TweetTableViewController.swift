@@ -9,8 +9,11 @@
 import UIKit
 import Twitter
 
+protocol MentionsTableDelegate {
+    func trackMention( value: String )
+}
 
-class TweetTableViewController: UITableViewController, UITextFieldDelegate {
+class TweetTableViewController: UITableViewController, UITextFieldDelegate, MentionsTableDelegate {
     
     // Model
     var tweets = [Array<Twitter.Tweet>](){
@@ -25,9 +28,23 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             lastTwitterRequest = nil
             searchForTweets()
             title = searchText!
-            print("\(searchText!)")
+//            print("\(searchText!)")
         }
     }
+    
+    // Delegate methods
+    func trackMention(value: String) {
+        print(value)
+        searchText = value
+//        trackingDestination = value
+    }
+    
+//    private var trackingDestination : Bool = false {
+//        didSet{
+//            searchText = "#thrashmetal"
+//            print("getted")
+//        }
+//    }
     
     // Fetching tweets
     private var twitterRequest: Twitter.Request?{
@@ -118,7 +135,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
     }
-
     
     // MARK: - Navigation
 
@@ -131,6 +147,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             if let cell = sender as? TweetTableViewCell,
                 let indexPath = tableView.indexPathForCell(cell),
                 let seguedToMVC = segue.destinationViewController as? TweetMentionsTableViewController{
+                seguedToMVC.delegate = self
                 seguedToMVC.tweet = tweets[indexPath.section][indexPath.row]
             }
         }

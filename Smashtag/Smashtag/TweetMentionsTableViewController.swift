@@ -11,7 +11,6 @@ import Twitter
 
 class TweetMentionsTableViewController: UITableViewController {
     
-    
     // Model
     
     var tweet : Tweet?{
@@ -19,6 +18,8 @@ class TweetMentionsTableViewController: UITableViewController {
             tableView.reloadData()
         }
     }
+    
+    var delegate : MentionsTableDelegate?
     
     // Constants
     struct Storyboard {
@@ -136,6 +137,22 @@ class TweetMentionsTableViewController: UITableViewController {
         }
         return UITableViewCell()
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        
+        switch indexPath.section {
+        case 1:
+            if let mentionString = tweet?.hashtags[indexPath.row].keyword{
+                delegate?.trackMention(mentionString)
+                self.navigationController?.popViewControllerAnimated(true)
+            }
+            
+        default:
+            break
+        }
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
