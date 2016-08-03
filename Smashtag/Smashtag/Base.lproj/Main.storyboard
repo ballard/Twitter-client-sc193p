@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="NFN-IH-kT2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="NFN-IH-kT2">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -145,13 +145,27 @@
                                     <outlet property="mentionText" destination="iKZ-uW-rqQ" id="Y6e-rB-GdQ"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="image" id="SrS-zP-kyR" customClass="TweetImageMentionTableViewCell" customModule="Smashtag" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="127" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="image" rowHeight="257" id="SrS-zP-kyR" customClass="TweetImageMentionTableViewCell" customModule="Smashtag" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="127" width="600" height="257"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SrS-zP-kyR" id="AJb-eH-1a5">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="256"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="p7c-ft-oQA">
+                                            <rect key="frame" x="8" y="8" width="584" height="240"/>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="p7c-ft-oQA" firstAttribute="top" secondItem="AJb-eH-1a5" secondAttribute="topMargin" id="2LZ-RD-2TR"/>
+                                        <constraint firstItem="p7c-ft-oQA" firstAttribute="leading" secondItem="AJb-eH-1a5" secondAttribute="leadingMargin" id="HSo-0O-7EX"/>
+                                        <constraint firstItem="p7c-ft-oQA" firstAttribute="bottom" secondItem="AJb-eH-1a5" secondAttribute="bottomMargin" id="Mg8-r4-7Tl"/>
+                                        <constraint firstItem="p7c-ft-oQA" firstAttribute="trailing" secondItem="AJb-eH-1a5" secondAttribute="trailingMargin" id="nS3-cA-Wdp"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="mentionImage" destination="p7c-ft-oQA" id="khR-35-dJ0"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

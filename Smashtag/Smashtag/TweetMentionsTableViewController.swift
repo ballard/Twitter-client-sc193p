@@ -23,15 +23,14 @@ class TweetMentionsTableViewController: UITableViewController {
     // Constants
     struct Storyboard {
         static let TextCellIdentifier = "text"
+        static let ImageCellIdentifier = "image"
     }
     
     // Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -51,7 +50,7 @@ class TweetMentionsTableViewController: UITableViewController {
         
         switch section {
         case 0:
-            return nil
+            return "images"
         case 1:
             return "hashtags"
         case 2:
@@ -73,7 +72,7 @@ class TweetMentionsTableViewController: UITableViewController {
         if let currentTweet = tweet{
             switch section {
             case 0:
-                return 0
+                return currentTweet.media.count
             case 1:
                 return currentTweet.hashtags.count
             case 2:
@@ -88,45 +87,55 @@ class TweetMentionsTableViewController: UITableViewController {
         }
     }
     
+    
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if tableView.numberOfRowsInSection(section) == 0 {
             view.hidden = true
         }
     }
-
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            if let ratio = tweet?.media[indexPath.row].aspectRatio {
+                return self.tableView.frame.width / CGFloat(ratio)
+            }
+        }
+        return 35
+    }
+    
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.TextCellIdentifier, forIndexPath: indexPath)
-
-        // Configure the cell...
-        
+        if tweet != nil{
+            func setMention(content: Mention) -> UITableViewCell{
+                let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.TextCellIdentifier, forIndexPath: indexPath)
+                if let tweetCell = cell as? TweetTextMentionTableViewCell{
+                    tweetCell.mentionContent = content.keyword
+                }
+                return cell
+            }
+            // Configure the cell...
             switch indexPath.section {
             case 0:
-                
-                break
+                if let imageMentionURL = tweet?.media[indexPath.row].url{
+                    let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.ImageCellIdentifier, forIndexPath: indexPath)
+                    if let imageCell = cell as? TweetImageMentionTableViewCell{
+                        imageCell.imageURL = imageMentionURL
+                    }
+                    return cell
+                }
             case 1:
-                let mention = tweet?.hashtags[indexPath.row]
-                if let tweetCell = cell as? TweetTextMentionTableViewCell{
-                    tweetCell.mentionContent = mention!.keyword
-                }
+                setMention(tweet!.hashtags[indexPath.row])
             case 2:
-                let mention = tweet?.userMentions[indexPath.row]
-                if let tweetCell = cell as? TweetTextMentionTableViewCell{
-                    tweetCell.mentionContent = mention!.keyword
-                }
+                setMention(tweet!.userMentions[indexPath.row])
             case 3:
-                let mention = tweet?.urls[indexPath.row]
-                if let tweetCell = cell as? TweetTextMentionTableViewCell{
-                    tweetCell.mentionContent = mention!.keyword
-                }
+                setMention(tweet!.urls[indexPath.row])
             default:
                 break
             }
-        
-        return cell
+        }
+        return UITableViewCell()
     }
-    
 
     /*
     // Override to support conditional editing of the table view.

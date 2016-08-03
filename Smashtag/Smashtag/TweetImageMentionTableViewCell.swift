@@ -9,7 +9,31 @@
 import UIKit
 
 class TweetImageMentionTableViewCell: UITableViewCell {
-
+    
+    // Outlets
+    
+    var imageURL : NSURL?{
+        didSet{
+            updateUI()
+        }
+    }
+    
+    @IBOutlet weak var mentionImage: UIImageView!
+    
+    private func updateUI(){
+        
+        mentionImage?.image = nil
+        
+        if imageURL != nil{
+            if let imageData = NSData(contentsOfURL: imageURL!){
+                mentionImage?.image = UIImage(data: imageData)                
+                mentionImage?.sizeToFit()
+            }
+        }
+    }
+    
+    
+    // Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
