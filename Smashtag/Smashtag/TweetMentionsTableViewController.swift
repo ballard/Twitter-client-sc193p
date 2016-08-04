@@ -19,12 +19,11 @@ class TweetMentionsTableViewController: UITableViewController {
         }
     }
     
-    var delegate : MentionsTableDelegate?
-    
     // Constants
     struct Storyboard {
         static let TextCellIdentifier = "text"
         static let ImageCellIdentifier = "image"
+        static let AnotherSearchTableSegue = "Show table"
     }
     
     // Lifecycle
@@ -138,18 +137,39 @@ class TweetMentionsTableViewController: UITableViewController {
         return UITableViewCell()
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        switch indexPath.section {
+//        case 1:
+//            var mentionValue = ""
+//            if let mentionString = tweet?.hashtags[indexPath.row].keyword {
+//                mentionValue = mentionString
+//            }
+//            performSegueWithIdentifier(Storyboard.AnotherSearchTableSegue, sender: mentionValue)
+//        default:
+//            break
+//        }
+//    }
+    
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if let identifier = segue.identifier where identifier == Storyboard.AnotherSearchTableSegue {
+//            if let searchTweetMVC = segue.destinationViewController as? TweetTableViewController {
+//                searchTweetMVC.searchText = sender as? String
+//                searchTweetMVC.searchTextField.text = sender as? String
+//            }
+//        }
+//    }
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
         
-        
-        switch indexPath.section {
-        case 1:
-            if let mentionString = tweet?.hashtags[indexPath.row].keyword{
-                delegate?.trackMention(mentionString)
-                self.navigationController?.popViewControllerAnimated(true)
+        if let identifier = segue.identifier where identifier == Storyboard.AnotherSearchTableSegue{
+            if let cell = sender as? TweetTableViewCell,
+                let indexPath = tableView.indexPathForCell(cell),
+                let seguedToMVC = segue.destinationViewController as? TweetTableViewController{
+                seguedToMVC.searchText = "#doom2016"// tweet = tweets[indexPath.section][indexPath.row]
             }
-            
-        default:
-            break
         }
     }
     

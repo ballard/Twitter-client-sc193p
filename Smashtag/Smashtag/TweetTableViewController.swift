@@ -9,11 +9,7 @@
 import UIKit
 import Twitter
 
-protocol MentionsTableDelegate {
-    func trackMention( value: String )
-}
-
-class TweetTableViewController: UITableViewController, UITextFieldDelegate, MentionsTableDelegate {
+class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     // Model
     var tweets = [Array<Twitter.Tweet>](){
@@ -31,20 +27,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, Ment
 //            print("\(searchText!)")
         }
     }
-    
-    // Delegate methods
-    func trackMention(value: String) {
-        print(value)
-        searchText = value
-//        trackingDestination = value
-    }
-    
-//    private var trackingDestination : Bool = false {
-//        didSet{
-//            searchText = "#thrashmetal"
-//            print("getted")
-//        }
-//    }
     
     // Fetching tweets
     private var twitterRequest: Twitter.Request?{
@@ -147,7 +129,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, Ment
             if let cell = sender as? TweetTableViewCell,
                 let indexPath = tableView.indexPathForCell(cell),
                 let seguedToMVC = segue.destinationViewController as? TweetMentionsTableViewController{
-                seguedToMVC.delegate = self
                 seguedToMVC.tweet = tweets[indexPath.section][indexPath.row]
             }
         }
