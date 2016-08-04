@@ -5,6 +5,6 @@
       location = "group:Twitter/Twitter.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Smashtag/Smashtag.xcodeproj">
+      location = "container:Smashtag/Smashtag.xcodeproj">
    </FileRef>
 </Workspace>
