@@ -11,14 +11,13 @@ import UIKit
 class TweetImageMentionTableViewCell: UITableViewCell {
     
     // Outlets
+    @IBOutlet weak var mentionImage: UIImageView!
     
     var imageURL : NSURL?{
         didSet{
             updateUI()
         }
     }
-    
-    @IBOutlet weak var mentionImage: UIImageView!
     
     private func updateUI(){
         mentionImage?.image = nil
@@ -28,18 +27,18 @@ class TweetImageMentionTableViewCell: UITableViewCell {
                 mentionImage?.sizeToFit()
             }
         }
-    }    
+    }
     
-    // Lifecycle
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+//    // Lifecycle
+//    override func awakeFromNib() {
+//        super.awakeFromNib()
+//        // Initialization code
+//    }
+//
+//    override func setSelected(selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//
+//        // Configure the view for the selected state
+//    }
 
 }

@@ -11,13 +11,8 @@ import Twitter
 
 class TweetMentionsTableViewController: UITableViewController {
     
-    // Model
-    
-    var tweet : Tweet?{
-        didSet{
-            tableView.reloadData()
-        }
-    }
+    // Model    
+    var tweet : Tweet?
     
     // Constants
     struct Storyboard {
@@ -28,20 +23,20 @@ class TweetMentionsTableViewController: UITableViewController {
     
     // Lifecycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        
+//        // Uncomment the following line to preserve selection between presentations
+//        // self.clearsSelectionOnViewWillAppear = false
+//
+//        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+//        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+//    }
+//
+//    override func didReceiveMemoryWarning() {
+//        super.didReceiveMemoryWarning()
+//        // Dispose of any resources that can be recreated.
+//    }
 
     // MARK: - Table view data source
     
@@ -100,7 +95,7 @@ class TweetMentionsTableViewController: UITableViewController {
                 return self.tableView.frame.width / CGFloat(ratio)
             }
         }
-        return 35
+        return UITableViewAutomaticDimension
     }
     
     
@@ -137,41 +132,39 @@ class TweetMentionsTableViewController: UITableViewController {
         return UITableViewCell()
     }
     
-//    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        switch indexPath.section {
-//        case 1:
-//            var mentionValue = ""
-//            if let mentionString = tweet?.hashtags[indexPath.row].keyword {
-//                mentionValue = mentionString
-//            }
-//            performSegueWithIdentifier(Storyboard.AnotherSearchTableSegue, sender: mentionValue)
-//        default:
-//            break
-//        }
-//    }
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        switch indexPath.section {
+        case 1:
+            performSegueWithIdentifier(Storyboard.AnotherSearchTableSegue, sender: tweet!.hashtags[indexPath.row].keyword)
+        case 2:
+            performSegueWithIdentifier(Storyboard.AnotherSearchTableSegue, sender: tweet!.userMentions[indexPath.row].keyword)
+        default:
+            break
+        }
+    }
     
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if let identifier = segue.identifier where identifier == Storyboard.AnotherSearchTableSegue {
-//            if let searchTweetMVC = segue.destinationViewController as? TweetTableViewController {
-//                searchTweetMVC.searchText = sender as? String
-//                searchTweetMVC.searchTextField.text = sender as? String
-//            }
-//        }
-//    }
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        
-        if let identifier = segue.identifier where identifier == Storyboard.AnotherSearchTableSegue{
-            if let cell = sender as? TweetTableViewCell,
-                let indexPath = tableView.indexPathForCell(cell),
-                let seguedToMVC = segue.destinationViewController as? TweetTableViewController{
-                seguedToMVC.searchText = "#doom2016"// tweet = tweets[indexPath.section][indexPath.row]
+        if let identifier = segue.identifier where identifier == Storyboard.AnotherSearchTableSegue {
+            if let searchTweetMVC = segue.destinationViewController as? TweetTableViewController {
+                searchTweetMVC.searchText = sender as? String
+                searchTweetMVC.searchTextField.text = sender as? String
             }
         }
     }
+    
+//    // In a storyboard-based application, you will often want to do a little preparation before navigation
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        // Get the new view controller using segue.destinationViewController.
+//        // Pass the selected object to the new view controller.
+//        
+//        if let identifier = segue.identifier where identifier == Storyboard.AnotherSearchTableSegue{
+//            if let cell = sender as? TweetTableViewCell,
+//                let indexPath = tableView.indexPathForCell(cell),
+//                let seguedToMVC = segue.destinationViewController as? TweetTableViewController{
+//                seguedToMVC.searchText = "#test"// tweet = tweets[indexPath.section][indexPath.row]
+//            }
+//        }
+//    }
     
 
     /*

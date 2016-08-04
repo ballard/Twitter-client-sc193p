@@ -9,18 +9,6 @@
 import UIKit
 
 class TweetTextMentionTableViewCell: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     
     // Outlets
     @IBOutlet weak var mentionText: UILabel!
@@ -32,8 +20,18 @@ class TweetTextMentionTableViewCell: UITableViewCell {
     }
     
     private func updateUI(){
-        mentionText.text = mentionContent
+        mentionText?.text = mentionContent
     }
     
+    //    override func awakeFromNib() {
+    //        super.awakeFromNib()
+    //        // Initialization code
+    //    }
+    //
+    //    override func setSelected(selected: Bool, animated: Bool) {
+    //        super.setSelected(selected, animated: animated)
+    //
+    //        // Configure the view for the selected state
+    //    }
 
 }
