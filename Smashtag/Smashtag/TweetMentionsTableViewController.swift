@@ -131,6 +131,24 @@ class TweetMentionsTableViewController: UITableViewController {
         return UITableViewCell()
     }
     
+    private var notURLCell = true
+    
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if indexPath.section == 3 {
+            notURLCell = false
+            if let urlCell = tableView.cellForRowAtIndexPath(indexPath) as? TweetTextMentionTableViewCell{
+                UIApplication.sharedApplication().openURL(NSURL(string: urlCell.mentionContent)!)
+            }
+        } else {
+            notURLCell = true
+        }
+        return indexPath
+    }
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        return notURLCell
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
