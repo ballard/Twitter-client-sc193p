@@ -96,16 +96,15 @@ class TweetMentionsTableViewController: UITableViewController {
             }
         }
         return UITableViewAutomaticDimension
-    }
-    
+    }    
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if tweet != nil{
-            func setMention(content: Mention) -> UITableViewCell{
+            func setMention(content: String) -> UITableViewCell{
                 let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.TextCellIdentifier, forIndexPath: indexPath)
                 if let tweetCell = cell as? TweetTextMentionTableViewCell{
-                    tweetCell.mentionContent = content.keyword
+                    tweetCell.mentionContent = content
                 }
                 return cell
             }
@@ -120,11 +119,11 @@ class TweetMentionsTableViewController: UITableViewController {
                     return cell
                 }
             case 1:
-                setMention(tweet!.hashtags[indexPath.row])
+                if let content = tweet?.hashtags[indexPath.row].keyword { return setMention(content) }
             case 2:
-                setMention(tweet!.userMentions[indexPath.row])
+                if let content = tweet?.userMentions[indexPath.row].keyword { return setMention(content) }
             case 3:
-                setMention(tweet!.urls[indexPath.row])
+                if let content = tweet?.urls[indexPath.row].keyword { return setMention(content) }
             default:
                 break
             }
@@ -132,40 +131,18 @@ class TweetMentionsTableViewController: UITableViewController {
         return UITableViewCell()
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch indexPath.section {
-        case 1:
-            performSegueWithIdentifier(Storyboard.AnotherSearchTableSegue, sender: tweet!.hashtags[indexPath.row].keyword)
-        case 2:
-            performSegueWithIdentifier(Storyboard.AnotherSearchTableSegue, sender: tweet!.userMentions[indexPath.row].keyword)
-        default:
-            break
-        }
-    }
-    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let identifier = segue.identifier where identifier == Storyboard.AnotherSearchTableSegue {
-            if let searchTweetMVC = segue.destinationViewController as? TweetTableViewController {
-                searchTweetMVC.searchText = sender as? String
-                searchTweetMVC.searchTextField.text = sender as? String
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if let identifier = segue.identifier where identifier == Storyboard.AnotherSearchTableSegue{
+            if let cell = sender as? TweetTextMentionTableViewCell,
+                let seguedToMVC = segue.destinationViewController as? TweetTableViewController{
+                seguedToMVC.searchText = cell.mentionContent
             }
         }
     }
-    
-//    // In a storyboard-based application, you will often want to do a little preparation before navigation
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        // Get the new view controller using segue.destinationViewController.
-//        // Pass the selected object to the new view controller.
-//        
-//        if let identifier = segue.identifier where identifier == Storyboard.AnotherSearchTableSegue{
-//            if let cell = sender as? TweetTableViewCell,
-//                let indexPath = tableView.indexPathForCell(cell),
-//                let seguedToMVC = segue.destinationViewController as? TweetTableViewController{
-//                seguedToMVC.searchText = "#test"// tweet = tweets[indexPath.section][indexPath.row]
-//            }
-//        }
-//    }
-    
 
     /*
     // Override to support conditional editing of the table view.
