@@ -41,6 +41,9 @@ class TweetMentionsTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     // MARK: - Table view data source: UITableViewDataSource
+    
+    
+    
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         switch section {
@@ -117,20 +120,10 @@ class TweetMentionsTableViewController: UITableViewController {
     
     private func getMentionType (type: MentionTypes) -> [Mention]? {
         switch type {
-        case .hashtags:
-            if let hashtags = tweet?.hashtags{
-                return hashtags
-            }
-        case .userMentions:
-            if let userMentions = tweet?.userMentions{
-                return userMentions
-            }
-        case .urls:
-            if let urls = tweet?.urls{
-                return urls
-            }
+        case .hashtags: return tweet!.hashtags
+        case .userMentions: return tweet!.userMentions
+        case .urls: return tweet!.urls
         }
-        return nil
     }
     
     private func getImageCell(url: NSURL, forIndexPath indexPath: NSIndexPath) -> UITableViewCell{
@@ -156,7 +149,6 @@ class TweetMentionsTableViewController: UITableViewController {
                 if let imageMentionURL = tweet?.media[indexPath.row].url { return getImageCell(imageMentionURL, forIndexPath: indexPath) }
             case .TextCell(let mentionType):
                 if let textMention = getMentionType(mentionType)?[indexPath.row].keyword { return getTextCell(textMention, forIndexPath: indexPath) }
-                return UITableViewCell()
             }
         }
         return UITableViewCell()
