@@ -82,7 +82,6 @@ class TweetMentionsTableViewController: UITableViewController {
         }
     }
     
-    
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if tableView.numberOfRowsInSection(section) == 0 {
             view.hidden = true
@@ -96,39 +95,75 @@ class TweetMentionsTableViewController: UITableViewController {
             }
         }
         return UITableViewAutomaticDimension
-    }    
+    }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        if tweet != nil{
-            func setMention(content: String) -> UITableViewCell{
-                let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.TextCellIdentifier, forIndexPath: indexPath)
-                if let tweetCell = cell as? TweetTextMentionTableViewCell{
-                    tweetCell.mentionContent = content
-                }
-                return cell
+    private var operations = [
+        0 : Operation.ImageCell,
+        1 : Operation.TextCell(.hashtags),
+        2 : Operation.TextCell(.userMentions),
+        3 : Operation.TextCell(.urls)
+    ]
+    
+    private enum Operation {
+        case TextCell(MentionTypes)
+        case ImageCell
+    }
+    
+    private enum MentionTypes {
+        case hashtags
+        case userMentions
+        case urls
+    }
+    
+    private func getMentionType (type: MentionTypes) -> [Mention]? {
+        switch type {
+        case .hashtags:
+            if let hashtags = tweet?.hashtags{
+                return hashtags
             }
-            // Configure the cell...
-            switch indexPath.section {
-            case 0:
-                if let imageMentionURL = tweet?.media[indexPath.row].url{
-                    let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.ImageCellIdentifier, forIndexPath: indexPath)
-                    if let imageCell = cell as? TweetImageMentionTableViewCell{
-                        imageCell.imageURL = imageMentionURL
-                    }
-                    return cell
-                }
-            case 1:
-                if let content = tweet?.hashtags[indexPath.row].keyword { return setMention(content) }
-            case 2:
-                if let content = tweet?.userMentions[indexPath.row].keyword { return setMention(content) }
-            case 3:
-                if let content = tweet?.urls[indexPath.row].keyword { return setMention(content) }
-            default:
-                break
+        case .userMentions:
+            if let userMentions = tweet?.userMentions{
+                return userMentions
+            }
+        case .urls:
+            if let urls = tweet?.urls{
+                return urls
+            }
+        }
+        return nil
+    }
+    
+    private func getImageCell(url: NSURL, forIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+        let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.ImageCellIdentifier, forIndexPath: indexPath)
+        if let imageCell = cell as? TweetImageMentionTableViewCell{
+            imageCell.imageURL = url
+        }
+        return cell
+    }
+    
+    private func getTextCell(content: String, forIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.TextCellIdentifier, forIndexPath: indexPath)
+        if let tweetCell = cell as? TweetTextMentionTableViewCell{
+            tweetCell.mentionContent = content
+        }
+        return cell
+    }
+    
+    private func makeCellForIndexPath(indexPath: NSIndexPath) -> UITableViewCell{
+        if let operation = operations[indexPath.section]{
+            switch operation {
+            case .ImageCell:
+                if let imageMentionURL = tweet?.media[indexPath.row].url { return getImageCell(imageMentionURL, forIndexPath: indexPath) }
+            case .TextCell(let mentionType):
+                if let textMention = getMentionType(mentionType)?[indexPath.row].keyword { return getTextCell(textMention, forIndexPath: indexPath) }
+                return UITableViewCell()
             }
         }
         return UITableViewCell()
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+            return makeCellForIndexPath(indexPath)
     }
     
     private var notURLCell = true
