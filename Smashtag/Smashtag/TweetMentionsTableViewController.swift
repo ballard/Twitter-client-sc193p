@@ -91,7 +91,7 @@ class TweetMentionsTableViewController: UITableViewController {
         case urls
     }
     
-    private func getMentionType (type: MentionTypes) -> [Mention]? {
+    private func getMention (type: MentionTypes) -> [Mention]? {
         switch type {
         case .hashtags: return tweet!.hashtags
         case .userMentions: return tweet!.userMentions
@@ -124,8 +124,8 @@ class TweetMentionsTableViewController: UITableViewController {
                 } else { return (UITableViewCell(), tweet!.media.count, "media") }
             case .TextCell(let mentionType):
                 if !description{
-                if let textMention = getMentionType(mentionType)?[indexPath.row].keyword { return (getTextCell(textMention, forIndexPath: indexPath), 0, "") }
-                } else { return (UITableViewCell(), getMentionType(mentionType)!.count, mentionType.rawValue) }
+                if let textMention = getMention(mentionType)?[indexPath.row].keyword { return (getTextCell(textMention, forIndexPath: indexPath), 0, "") }
+                } else { return (UITableViewCell(), getMention(mentionType)!.count, mentionType.rawValue) }
             }
         }
         return (UITableViewCell(), Int.min, "")
