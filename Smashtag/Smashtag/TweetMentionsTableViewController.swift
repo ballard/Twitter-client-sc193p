@@ -40,9 +40,9 @@ class TweetMentionsTableViewController: UITableViewController {
         }
     }
     
-    private func getImageCell(url: NSURL, forIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+    private func getImageCell(url: NSURL, forIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.ImageCellIdentifier, forIndexPath: indexPath)
-        if let imageCell = cell as? TweetImageMentionTableViewCell{
+        if let imageCell = cell as? TweetImageMentionTableViewCell {
             imageCell.imageURL = url
         }
         return cell
@@ -56,8 +56,8 @@ class TweetMentionsTableViewController: UITableViewController {
         return cell
     }
     
-    private func makeCellForIndexPath(indexPath: NSIndexPath) -> UITableViewCell{
-        if let operation = operations[indexPath.section]{
+    private func makeCellForIndexPath(indexPath: NSIndexPath) -> UITableViewCell {
+        if let operation = operations[indexPath.section] {
             switch operation {
             case .ImageCell: if let imageMentionURL = tweet?.media[indexPath.row].url { return getImageCell(imageMentionURL, forIndexPath: indexPath) }
             case .TextCell(let mentionType):
@@ -80,6 +80,7 @@ class TweetMentionsTableViewController: UITableViewController {
         static let TextCellIdentifier = "text"
         static let ImageCellIdentifier = "image"
         static let AnotherSearchTableSegue = "Show table"
+        static let ShowImageSegue = "Show Image"
     }
     
     // Lifecycle
@@ -143,7 +144,7 @@ class TweetMentionsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         if indexPath.section == 3 {
             notURLCell = false
-            if let urlCell = tableView.cellForRowAtIndexPath(indexPath) as? TweetTextMentionTableViewCell{
+            if let urlCell = tableView.cellForRowAtIndexPath(indexPath) as? TweetTextMentionTableViewCell {
                 UIApplication.sharedApplication().openURL(NSURL(string: urlCell.mentionContent)!)
             }
         } else {
@@ -161,10 +162,20 @@ class TweetMentionsTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if let identifier = segue.identifier where identifier == Storyboard.AnotherSearchTableSegue{
-            if let cell = sender as? TweetTextMentionTableViewCell,
-                let seguedToMVC = segue.destinationViewController as? TweetTableViewController{
-                seguedToMVC.searchText = cell.mentionContent
+        if let identifier = segue.identifier{
+            switch identifier {
+            case Storyboard.AnotherSearchTableSegue:
+                if let cell = sender as? TweetTextMentionTableViewCell,
+                    let seguedToMVC = segue.destinationViewController as? TweetTableViewController {
+                    seguedToMVC.searchText = cell.mentionContent
+                }
+            case Storyboard.ShowImageSegue:
+                if let cell = sender as? TweetImageMentionTableViewCell,
+                    let seguedToMVC = segue.destinationViewController as? MediaViewController{
+                    seguedToMVC.image = cell.mentionImage.image
+                }
+            default:
+                break
             }
         }
     }

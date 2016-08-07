@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="NFN-IH-kT2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="NFN-IH-kT2">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -166,6 +166,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="mentionImage" destination="p7c-ft-oQA" id="khR-35-dJ0"/>
+                                    <segue destination="BJi-zJ-EtU" kind="show" identifier="Show Image" id="oU9-aS-wBi"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -178,7 +179,39 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gjg-OZ-FX1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2719" y="835"/>
+            <point key="canvasLocation" x="2739" y="51"/>
+        </scene>
+        <!--Media View Controller-->
+        <scene sceneID="nmX-Cw-O2L">
+            <objects>
+                <viewController id="BJi-zJ-EtU" customClass="MediaViewController" customModule="Smashtag" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ksh-zV-Wyw"/>
+                        <viewControllerLayoutGuide type="bottom" id="zy8-I5-OVj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="thu-QF-G2l">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Gq-Ox-KQ2">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9Gq-Ox-KQ2" firstAttribute="top" secondItem="thu-QF-G2l" secondAttribute="top" id="B6b-WC-RTj"/>
+                            <constraint firstAttribute="trailing" secondItem="9Gq-Ox-KQ2" secondAttribute="trailing" id="e0f-cc-wFD"/>
+                            <constraint firstItem="9Gq-Ox-KQ2" firstAttribute="bottom" secondItem="zy8-I5-OVj" secondAttribute="top" id="hB5-c7-WzA"/>
+                            <constraint firstItem="9Gq-Ox-KQ2" firstAttribute="leading" secondItem="thu-QF-G2l" secondAttribute="leading" id="r6t-AY-nu0"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="scrollView" destination="9Gq-Ox-KQ2" id="OqY-Uq-RhS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q4V-7k-g4F" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3483" y="43"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2GP-oF-Je7">
