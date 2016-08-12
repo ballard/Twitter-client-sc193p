@@ -220,11 +220,11 @@
             </objects>
             <point key="canvasLocation" x="3483" y="43"/>
         </scene>
-        <!--Item-->
+        <!--Tweets-->
         <scene sceneID="2GP-oF-Je7">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="NFN-IH-kT2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Pol-M2-SP7"/>
+                    <tabBarItem key="tabBarItem" title="Tweets" id="Pol-M2-SP7"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="sPJ-NY-KP9">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -239,7 +239,7 @@
             </objects>
             <point key="canvasLocation" x="2135" y="835"/>
         </scene>
-        <!--Item-->
+        <!--Keywords-->
         <scene sceneID="tn2-rd-9zZ">
             <objects>
                 <tableViewController id="G3v-dD-bkt" sceneMemberID="viewController">
@@ -262,7 +262,7 @@
                             <outlet property="delegate" destination="G3v-dD-bkt" id="QHp-B1-NME"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Item" id="kk5-gs-dEw"/>
+                    <tabBarItem key="tabBarItem" title="Keywords" id="kk5-gs-dEw"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPp-LD-gKg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

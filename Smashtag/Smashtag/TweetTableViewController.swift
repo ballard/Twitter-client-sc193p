@@ -24,9 +24,50 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             lastTwitterRequest = nil
             searchForTweets()
             title = searchText!
+            updateHistory(searchText!)
 //            print("\(searchText!)")
         }
     }
+    
+    private struct Keys{
+        static let History = "Smashtag.History"
+    }
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
+
+    private var history : [String]?{
+        get{
+            return defaults.objectForKey(Keys.History) as? [String] ?? nil
+        }
+        set{
+            defaults.setObject(newValue, forKey: Keys.History)
+        }
+    }
+    
+    private func updateHistory(input: String){
+        var tempHistory = [String]()
+        if let storedHistory = history{
+            tempHistory = storedHistory
+        }
+        
+        if tempHistory.count > 0{
+            for keyIndex in 0..<tempHistory.count {
+                if tempHistory[keyIndex] == input {
+                    tempHistory.removeAtIndex(keyIndex)
+                    break
+                }
+            }
+        }
+        
+        if tempHistory.count > 5{
+            tempHistory.removeFirst()
+        }
+        
+        tempHistory.append(input)
+        history = tempHistory
+        print("\(history)")
+    }
+    
     
     // Fetching tweets
     private var twitterRequest: Twitter.Request?{
@@ -116,6 +157,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
+//        history = []
     }
     
     // MARK: - Navigation

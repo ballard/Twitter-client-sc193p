@@ -17,13 +17,13 @@ class TwetTabBarController: UITabBarController {
 //        self.viewControllers.
         
         
-        if let controllers = self.viewControllers{
-            for i in 0..<controllers.count{
-                if controllers[i] is TweetTableViewController{
-                    tabBar.items?[i].title = "Tweets"
-                }
-            }
-        }
+//        if let controllers = self.viewControllers{
+//            for i in 0..<controllers.count{
+//                if controllers[i] is TweetTableViewController{
+//                    tabBar.items?[i].title = "Tweets"
+//                }
+//            }
+//        }
         
         
 //        tabBar.items?[0].title = "Tweets"
