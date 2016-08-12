@@ -13,32 +13,45 @@ class TweetImageMentionTableViewCell: UITableViewCell {
     // Outlets
     @IBOutlet weak var mentionImage: UIImageView!
     
-    var imageURL : NSURL?{
+    var imageURL : NSURL? {
         didSet{
             updateUI()
         }
     }
     
+    var img : UIImage? {
+        set{
+            mentionImage?.image = newValue
+            mentionImage?.sizeToFit()
+            spinner.stopAnimating()
+        }
+        get{
+            return mentionImage?.image
+        }
+    }
+    
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    
     private func updateUI(){
         mentionImage?.image = nil
-        if imageURL != nil{
-            if let imageData = NSData(contentsOfURL: imageURL!){
-                mentionImage?.image = UIImage(data: imageData)                
-                mentionImage?.sizeToFit()
+        if let url = imageURL {
+            spinner.startAnimating()
+            dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)){
+                [weak weakSelf = self] in
+                let contentOfUrl = NSData(contentsOfURL: url)
+                dispatch_async(dispatch_get_main_queue()){
+                    if url == weakSelf?.imageURL{
+                        if let imageData = contentOfUrl {
+                            weakSelf?.img = UIImage(data: imageData)
+                        } else {
+                            weakSelf?.spinner?.stopAnimating()
+                        }
+                    } else {
+                        print("url dropped")
+                    }
+                }
             }
         }
     }
     
-//    // Lifecycle
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//    }
-//
-//    override func setSelected(selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
-
 }

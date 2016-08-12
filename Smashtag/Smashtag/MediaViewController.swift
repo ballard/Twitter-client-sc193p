@@ -12,7 +12,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
     
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        return scrollView
+        return imageView
     }
     
     private var imageView = UIImageView()
@@ -40,6 +40,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.addSubview(imageView)
+//        scrollView?.contentSize = imageView.frame.size
 
         // Do any additional setup after loading the view.
     }

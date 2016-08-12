@@ -20,11 +20,8 @@ extension NSMutableAttributedString{
 class TweetTableViewCell: UITableViewCell {
 
     @IBOutlet weak var tweetScreenNameLabel: UILabel!
-    
     @IBOutlet weak var tweetTextLabel: UILabel!
-    
     @IBOutlet weak var tweetCreatedLabel: UILabel!
-    
     @IBOutlet weak var TweetProfileImageView: UIImageView!
     
     var tweet : Twitter.Tweet? {
@@ -32,6 +29,9 @@ class TweetTableViewCell: UITableViewCell {
             updateUI()
         }
     }
+    
+//    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    var imageURL: NSURL?
     
     private func updateUI(){
         tweetTextLabel?.attributedText = nil
@@ -55,9 +55,28 @@ class TweetTableViewCell: UITableViewCell {
             tweetScreenNameLabel?.text = "\(tweet.user)"
             
             if let profileImageURL = tweet.user.profileImageURL {
-                if let imageData = NSData(contentsOfURL: profileImageURL){
-                    TweetProfileImageView?.image = UIImage(data: imageData)
+//                spinner?.startAnimating()
+                imageURL = profileImageURL
+                dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)){
+                    [weak weakSelf = self] in
+                    let contentOfUrl = NSData(contentsOfURL: profileImageURL)
+                    dispatch_async(dispatch_get_main_queue()){
+                        if profileImageURL == weakSelf?.imageURL {
+                            if let imageData = contentOfUrl {
+                                weakSelf?.TweetProfileImageView?.image = UIImage(data: imageData)
+//                                weakSelf?.spinner?.stopAnimating()
+                            } //else {
+//                                weakSelf?.spinner?.stopAnimating()
+                            //}
+                        } else {
+                            print("url dropped")
+                        }
+                    }
                 }
+                
+//                if let imageData = NSData(contentsOfURL: profileImageURL){
+//                    TweetProfileImageView?.image = UIImage(data: imageData)
+//                }
             }
             
             let formatter = NSDateFormatter()

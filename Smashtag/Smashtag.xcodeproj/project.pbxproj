@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C289FD21D5D268D009D0C2E /* TwetTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C289FD11D5D268D009D0C2E /* TwetTabBarController.swift */; };
 		2C3365A51D573F4900E395DD /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C3365A41D573F4900E395DD /* Twitter.framework */; };
 		2C3365A61D573F4900E395DD /* Twitter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2C3365A41D573F4900E395DD /* Twitter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2C3365AA1D57D4F300E395DD /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3365A91D57D4F300E395DD /* MediaViewController.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2C289FD11D5D268D009D0C2E /* TwetTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwetTabBarController.swift; sourceTree = "<group>"; };
 		2C3365A41D573F4900E395DD /* Twitter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Twitter.framework; path = "/Users/ivan/Library/Developer/Xcode/DerivedData/SmashtagWorkspace-dxehsbjanpdphxdubwqnvgxvmylb/Build/Products/Debug-iphonesimulator/Twitter.framework"; sourceTree = "<absolute>"; };
 		2C3365A91D57D4F300E395DD /* MediaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		2CC8FAE71D4FDF080051B898 /* TweetMentionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetMentionsTableViewController.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				2CC8FAED1D4FE7C50051B898 /* TweetTextMentionTableViewCell.swift */,
 				2CC8FAEF1D4FE7EB0051B898 /* TweetImageMentionTableViewCell.swift */,
 				2C3365A91D57D4F300E395DD /* MediaViewController.swift */,
+				2C289FD11D5D268D009D0C2E /* TwetTabBarController.swift */,
 			);
 			path = Smashtag;
 			sourceTree = "<group>";
@@ -180,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EDBFE7B1D3E2BDF004E82A0 /* AppDelegate.swift in Sources */,
+				2C289FD21D5D268D009D0C2E /* TwetTabBarController.swift in Sources */,
 				2C3365AA1D57D4F300E395DD /* MediaViewController.swift in Sources */,
 				6EDBFE8E1D3E2D2C004E82A0 /* TweetTableViewController.swift in Sources */,
 				2CC8FAE81D4FDF080051B898 /* TweetMentionsTableViewController.swift in Sources */,
