@@ -200,8 +200,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Gq-Ox-KQ2">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Gq-Ox-KQ2">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -242,19 +242,35 @@
         <!--Keywords-->
         <scene sceneID="tn2-rd-9zZ">
             <objects>
-                <tableViewController id="G3v-dD-bkt" sceneMemberID="viewController">
+                <tableViewController id="G3v-dD-bkt" customClass="SearhKeywordsTableViewController" customModule="Smashtag" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="pwx-0O-Iw0">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="4gV-Pg-DIa">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Search Keyword" id="4gV-Pg-DIa" customClass="SearchKeywordTableViewCell" customModule="Smashtag" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4gV-Pg-DIa" id="a3C-LQ-NXA">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fH4-x9-kbQ">
+                                            <rect key="frame" x="8" y="11" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="fH4-x9-kbQ" firstAttribute="leading" secondItem="a3C-LQ-NXA" secondAttribute="leadingMargin" id="0IG-YU-tpI"/>
+                                        <constraint firstItem="fH4-x9-kbQ" firstAttribute="centerY" secondItem="a3C-LQ-NXA" secondAttribute="centerY" id="HYb-sI-fVx"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="keyword" destination="fH4-x9-kbQ" id="wdH-o0-KBK"/>
+                                    <segue destination="hGM-vP-8rx" kind="show" identifier="History Search Segue" id="ijS-5p-ues"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -262,11 +278,11 @@
                             <outlet property="delegate" destination="G3v-dD-bkt" id="QHp-B1-NME"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Keywords" id="kk5-gs-dEw"/>
+                    <navigationItem key="navigationItem" title="Keywords" id="d2Q-dY-EsB"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPp-LD-gKg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2135" y="1568"/>
+            <point key="canvasLocation" x="2829" y="1504"/>
         </scene>
         <!--Twet Tab Bar Controller-->
         <scene sceneID="bXu-0u-1Ba">
@@ -279,15 +295,34 @@
                     </tabBar>
                     <connections>
                         <segue destination="NFN-IH-kT2" kind="relationship" relationship="viewControllers" id="Fze-ql-q7x"/>
-                        <segue destination="G3v-dD-bkt" kind="relationship" relationship="viewControllers" id="MsN-Lm-tWe"/>
+                        <segue destination="6Uw-X6-2Y9" kind="relationship" relationship="viewControllers" id="MsN-Lm-tWe"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2TJ-5b-atN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1323" y="1185"/>
         </scene>
+        <!--Keywords-->
+        <scene sceneID="wsD-Zw-nbc">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6Uw-X6-2Y9" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Keywords" id="kk5-gs-dEw"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="rF2-Ua-NrF">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="G3v-dD-bkt" kind="relationship" relationship="rootViewController" id="eda-XT-8si"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AkO-eH-2eL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2135" y="1616"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Wq6-yU-GHg"/>
+        <segue reference="ijS-5p-ues"/>
     </inferredMetricsTieBreakers>
 </document>
