@@ -32,7 +32,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         didSet{
             scrollView?.contentSize = imageView.frame.size
             scrollView.delegate = self
-            scrollView.minimumZoomScale = 0.03
+            scrollView.minimumZoomScale = 0.001
             scrollView.maximumZoomScale = 1.0
         }
     }
@@ -40,7 +40,6 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.addSubview(imageView)
-//        scrollView?.contentSize = imageView.frame.size
 
         // Do any additional setup after loading the view.
     }

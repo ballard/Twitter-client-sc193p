@@ -23,23 +23,6 @@ class TweetMentionsTableViewController: UITableViewController {
             if let urls = tweet?.urls { appendTextMension(urls, forMensionType: "urls") }
             if let userMensions = tweet?.userMentions { appendTextMension(userMensions, forMensionType: "user mentions") }
             
-//            if let hashtagsMensionItems = tweet?.hashtags.map({
-//                MensionItem.Keyword($0.keyword)
-//            }){
-//                sections.append(Section(type: "hashtags", mensions: hashtagsMensionItems))
-//            }
-//            
-//            if let urlsMensionItems = tweet?.urls.map({
-//                MensionItem.Keyword($0.keyword)
-//            }){
-//                sections.append(Section(type: "urls", mensions: urlsMensionItems))
-//            }
-//            
-//            if let userMensionItems = tweet?.userMentions.map({
-//                MensionItem.Keyword($0.keyword)
-//            }){
-//                sections.append(Section(type: "user mentions", mensions: userMensionItems))
-//            }
         }
     }
     
@@ -60,68 +43,6 @@ class TweetMentionsTableViewController: UITableViewController {
         case Keyword(String)
         case Image(NSURL, Double)
     }
-    
-    // old model
-//    private var operations = [
-//        0 : Operation.ImageCell,
-//        1 : Operation.TextCell(.hashtags),
-//        2 : Operation.TextCell(.userMentions),
-//        3 : Operation.TextCell(.urls)
-//    ]
-//    
-//    private enum Operation {
-//        case TextCell(TextMentionType)
-//        case ImageCell
-//    }
-//    
-//    private enum TextMentionType: String {
-//        case hashtags
-//        case userMentions
-//        case urls
-//    }
-//    
-//    private func getMention (type: TextMentionType) -> [Mention]? {
-//        switch type {
-//        case .hashtags: return tweet!.hashtags
-//        case .userMentions: return tweet!.userMentions
-//        case .urls: return tweet!.urls
-//        }
-//    }
-//    
-//    private func getImageCell(url: NSURL, forIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.ImageCellIdentifier, forIndexPath: indexPath)
-//        if let imageCell = cell as? TweetImageMentionTableViewCell {
-//            imageCell.imageURL = url
-//        }
-//        return cell
-//    }
-//    
-//    private func getTextCell(content: String, forIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.TextCellIdentifier, forIndexPath: indexPath)
-//        if let tweetCell = cell as? TweetTextMentionTableViewCell{
-//            tweetCell.mentionContent = content
-//        }
-//        return cell
-//    }
-//    
-//    private func makeCellForIndexPath(indexPath: NSIndexPath) -> UITableViewCell {
-//        if let operation = operations[indexPath.section] {
-//            switch operation {
-//            case .ImageCell: if let imageMentionURL = tweet?.media[indexPath.row].url { return getImageCell(imageMentionURL, forIndexPath: indexPath) }
-//            case .TextCell(let mentionType):
-//                if let textMention = getMention(mentionType)?[indexPath.row].keyword { return getTextCell(textMention, forIndexPath: indexPath) }
-//            }
-//        }
-//        return UITableViewCell()
-//    }
-//    
-//    private func getSectionDescription(section: Int) -> (Int, String) {
-//        if let operation = operations[section]{
-//            switch operation {
-//            case .ImageCell: return (tweet!.media.count, "media")
-//            case .TextCell(let mentionType): return (getMention(mentionType)!.count, mentionType.rawValue) }
-//        } else { return (Int.min, "")}
-//    }
     
     // Constants
     struct Storyboard {
@@ -155,7 +76,6 @@ class TweetMentionsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].type
-//        return getSectionDescription(section).1
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -168,8 +88,6 @@ class TweetMentionsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return sections[section].mensions.count
-
-//        return getSectionDescription(section).0
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -183,13 +101,6 @@ class TweetMentionsTableViewController: UITableViewController {
         case .Image(_, let ratio): return tableView.frame.width / CGFloat(ratio)
         default: return UITableViewAutomaticDimension
         }
-        
-//        if indexPath.section == 0 {
-//            if let ratio = tweet?.media[indexPath.row].aspectRatio {
-//                return self.tableView.frame.width / CGFloat(ratio)
-//            }
-//        }
-//        return UITableViewAutomaticDimension
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
