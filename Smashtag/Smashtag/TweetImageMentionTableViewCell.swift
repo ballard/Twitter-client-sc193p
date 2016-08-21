@@ -13,6 +13,8 @@ class TweetImageMentionTableViewCell: UITableViewCell {
     // Outlets
     @IBOutlet weak var mentionImage: UIImageView!
     
+    var reportImageLoaded : (() -> Void)?
+    
     var imageURL : NSURL? {
         didSet{
             updateUI()
@@ -24,6 +26,7 @@ class TweetImageMentionTableViewCell: UITableViewCell {
             mentionImage?.image = newValue
             mentionImage?.sizeToFit()
             spinner.stopAnimating()
+            reportImageLoaded!()
         }
         get{
             return mentionImage?.image

@@ -109,6 +109,10 @@ class TweetMentionsTableViewController: UITableViewController {
             let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.ImageCellIdentifier, forIndexPath: indexPath)
             if let imageCell = cell as? TweetImageMentionTableViewCell {
                 imageCell.imageURL = url
+                imageCell.reportImageLoaded = ({ [weak weakSelf = self] in
+                    weakSelf?.imageLoaded = true
+                    print("reported")
+                    })
             }
             return cell
         case .Keyword(let mension):
@@ -121,6 +125,8 @@ class TweetMentionsTableViewController: UITableViewController {
     }
     
     private var notURLCell = true
+    
+    private var imageLoaded = false
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         if indexPath.section == 3 {
@@ -135,6 +141,9 @@ class TweetMentionsTableViewController: UITableViewController {
     }
     
     override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        if identifier == Storyboard.ShowImageSegue{
+            return imageLoaded
+        }
         return notURLCell
     }
     
