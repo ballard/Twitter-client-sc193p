@@ -45,6 +45,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     private func updateHistory(input: String){
+        
+        let lowInput = input.lowercaseString
+        
         var tempHistory = [String]()
         if let storedHistory = history{
             tempHistory = storedHistory
@@ -52,7 +55,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         
         if tempHistory.count > 0{
             for keyIndex in 0..<tempHistory.count {
-                if tempHistory[keyIndex] == input {
+                if tempHistory[keyIndex] == lowInput {
                     tempHistory.removeAtIndex(keyIndex)
                     break
                 }
@@ -62,8 +65,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         if tempHistory.count > 5{
             tempHistory.removeFirst()
         }
-        
-        tempHistory.append(input)
+        tempHistory.append(lowInput)
         history = tempHistory
         print("\(history)")
     }
