@@ -17,38 +17,52 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
     
     private var imageView = UIImageView()
     
-    var image: UIImage? {
-        set {
-            imageView.image = newValue
-            imageView.sizeToFit()
-            scrollView?.contentSize = imageView.frame.size
-        }
-        get {
-            return imageView.image
-        }
-    }
+    var image: UIImage?
     
     @IBOutlet weak var scrollView: UIScrollView! {
         didSet{
-            scrollView?.contentSize = imageView.frame.size
             scrollView.delegate = self
-            scrollView.minimumZoomScale = 0.001
-            scrollView.maximumZoomScale = 1.0
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        scrollView.addSubview(imageView)
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    private var wasInteracted = false
+    
+    func setZoomScale() {
+        
+        guard !wasInteracted else { return }
+        
+        let imageViewSize = imageView.bounds.size
+        if let scrollViewSize = scrollView?.bounds.size{
+            let widthScale = scrollViewSize.width / imageViewSize.width
+            let heightScale = scrollViewSize.height / imageViewSize.height
+            let scale = max(widthScale, heightScale)
+            scrollView.minimumZoomScale = 0.1
+            scrollView.maximumZoomScale = 5.0
+            scrollView.zoomScale = scale
+            scrollView.contentOffset = CGPoint(x: ( imageView.frame.size.width - scrollView.frame.size.width) / 2,
+                                               y: ( imageView.frame.size.height - scrollView.frame.size.height ) / 2)
+        }
     }
     
+    func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
+        wasInteracted = true
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        imageView.image = image
+        imageView.sizeToFit()
+        scrollView.addSubview(imageView)
+        scrollView.contentSize = imageView.frame.size
+        setZoomScale()
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        coordinator.animateAlongsideTransition({ (context) in
+            self.setZoomScale()
+            }, completion: nil )
+    }
 
     /*
     // MARK: - Navigation

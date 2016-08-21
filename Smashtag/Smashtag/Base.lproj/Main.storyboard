@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="HjC-XL-2Qi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="HjC-XL-2Qi">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -201,15 +201,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Gq-Ox-KQ2">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="9Gq-Ox-KQ2" firstAttribute="top" secondItem="thu-QF-G2l" secondAttribute="top" id="B6b-WC-RTj"/>
-                            <constraint firstAttribute="trailing" secondItem="9Gq-Ox-KQ2" secondAttribute="trailing" id="e0f-cc-wFD"/>
-                            <constraint firstItem="9Gq-Ox-KQ2" firstAttribute="bottom" secondItem="zy8-I5-OVj" secondAttribute="top" id="hB5-c7-WzA"/>
-                            <constraint firstItem="9Gq-Ox-KQ2" firstAttribute="leading" secondItem="thu-QF-G2l" secondAttribute="leading" id="r6t-AY-nu0"/>
+                            <constraint firstItem="9Gq-Ox-KQ2" firstAttribute="top" secondItem="thu-QF-G2l" secondAttribute="top" id="TN7-0e-EzX"/>
+                            <constraint firstItem="9Gq-Ox-KQ2" firstAttribute="leading" secondItem="thu-QF-G2l" secondAttribute="leading" id="r6n-ms-oJV"/>
+                            <constraint firstAttribute="bottom" secondItem="9Gq-Ox-KQ2" secondAttribute="bottom" id="rBt-q5-SQ5"/>
+                            <constraint firstAttribute="trailing" secondItem="9Gq-Ox-KQ2" secondAttribute="trailing" id="xFG-Jc-qUy"/>
                         </constraints>
                     </view>
                     <connections>
@@ -258,7 +258,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fH4-x9-kbQ">
                                             <rect key="frame" x="8" y="11" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
