@@ -26,7 +26,9 @@ class TweetImageMentionTableViewCell: UITableViewCell {
             mentionImage?.image = newValue
             mentionImage?.sizeToFit()
             spinner.stopAnimating()
-            reportImageLoaded!()
+            if let report = reportImageLoaded{
+                report()
+            }
         }
         get{
             return mentionImage?.image
