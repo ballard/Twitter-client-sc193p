@@ -62,7 +62,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if tempHistory.count > 5{
+        if tempHistory.count > 99 {
             tempHistory.removeFirst()
         }
         tempHistory.append(lowInput)

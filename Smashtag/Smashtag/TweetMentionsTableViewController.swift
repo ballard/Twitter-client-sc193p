@@ -11,17 +11,24 @@ import Twitter
 
 class TweetMentionsTableViewController: UITableViewController {
     
+    struct SectionTitles {
+        static let Hashtags = "Hashtags"
+        static let URLs = "URLs"
+        static let Users = "Users"
+        static let Images = "Images"
+    }
+    
     // Model    
     var tweet : Tweet?{
         didSet{
 
             if let mediaMentionItems = tweet?.media.map({ MensionItem.Image($0.url, $0.aspectRatio) }) {
-                sections.append(Section(type: "media", mensions: mediaMentionItems))
+                sections.append(Section(type: SectionTitles.Images, mensions: mediaMentionItems))
             }
             
-            if let hashtags = tweet?.hashtags { appendTextMension(hashtags, forMensionType: "hashtags") }
-            if let urls = tweet?.urls { appendTextMension(urls, forMensionType: "urls") }
-            if let userMensions = tweet?.userMentions { appendTextMension(userMensions, forMensionType: "user mentions") }
+            if let hashtags = tweet?.hashtags { appendTextMension(hashtags, forMensionType: SectionTitles.Hashtags) }
+            if let urls = tweet?.urls { appendTextMension(urls, forMensionType: SectionTitles.URLs) }
+            if let userMensions = tweet?.userMentions { appendTextMension(userMensions, forMensionType: SectionTitles.Users) }
             
         }
     }
@@ -81,8 +88,6 @@ class TweetMentionsTableViewController: UITableViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return sections.count
-        
-//        return 4
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -129,8 +134,7 @@ class TweetMentionsTableViewController: UITableViewController {
     private var imageLoaded = false
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        
-        if sections[indexPath.section].type == "urls"{
+        if sections[indexPath.section].type == SectionTitles.URLs{
             notURLCell = false
             if let urlCell = tableView.cellForRowAtIndexPath(indexPath) as? TweetTextMentionTableViewCell {
                 UIApplication.sharedApplication().openURL(NSURL(string: urlCell.mentionContent)!)
