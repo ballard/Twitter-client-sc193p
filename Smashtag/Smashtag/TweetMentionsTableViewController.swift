@@ -129,7 +129,8 @@ class TweetMentionsTableViewController: UITableViewController {
     private var imageLoaded = false
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if indexPath.section == 3 {
+        
+        if sections[indexPath.section].type == "urls"{
             notURLCell = false
             if let urlCell = tableView.cellForRowAtIndexPath(indexPath) as? TweetTextMentionTableViewCell {
                 UIApplication.sharedApplication().openURL(NSURL(string: urlCell.mentionContent)!)
