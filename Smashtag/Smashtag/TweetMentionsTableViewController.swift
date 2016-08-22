@@ -21,20 +21,22 @@ class TweetMentionsTableViewController: UITableViewController {
     // Model    
     var tweet : Tweet?{
         didSet{
-
             if let mediaMentionItems = tweet?.media.map({ MensionItem.Image($0.url, $0.aspectRatio) }) {
                 sections.append(Section(type: SectionTitles.Images, mensions: mediaMentionItems))
-            }
-            
+            }            
             if let hashtags = tweet?.hashtags { appendTextMension(hashtags, forMensionType: SectionTitles.Hashtags) }
             if let urls = tweet?.urls { appendTextMension(urls, forMensionType: SectionTitles.URLs) }
             if let userMensions = tweet?.userMentions { appendTextMension(userMensions, forMensionType: SectionTitles.Users) }
-            
         }
     }
     
     private func appendTextMension(mension: [Mention], forMensionType type: String){
-        let mensionItem = mension.map({ MensionItem.Keyword($0.keyword) })
+        var mensionItem = mension.map({ MensionItem.Keyword($0.keyword) })
+        if type == SectionTitles.Users{
+            if let currentTweet = tweet{
+                mensionItem.insert(MensionItem.Keyword(String(currentTweet.user)), atIndex: mensionItem.startIndex)
+            }
+        }
         sections.append(Section(type: type, mensions: mensionItem))
     }
     
