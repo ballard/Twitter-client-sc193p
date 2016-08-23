@@ -34,7 +34,7 @@ class TweetMentionsTableViewController: UITableViewController {
         var mensionItem = mension.map({ MensionItem.Keyword($0.keyword) })
         if type == SectionTitles.Users{
             if let currentTweet = tweet{
-                mensionItem.insert(MensionItem.Keyword(String(String(currentTweet.user).characters.split(" ").first!)), atIndex: mensionItem.startIndex)
+                mensionItem.insert(MensionItem.Keyword("@" + currentTweet.user.screenName), atIndex: mensionItem.startIndex)
             }
         }
         sections.append(Section(type: type, mensions: mensionItem))

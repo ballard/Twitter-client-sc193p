@@ -78,7 +78,7 @@ class SearhKeywordsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.KeywordCell, forIndexPath: indexPath)
         
         if let keywords = history{
-            let keyword = keywords[indexPath.row]
+            let keyword = keywords[keywords.count - indexPath.row - 1]
             if let keywordCell = cell as? SearchKeywordTableViewCell{
                 keywordCell.keywordValue = keyword
             }
