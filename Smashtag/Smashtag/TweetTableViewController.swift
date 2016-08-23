@@ -159,7 +159,20 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
-//        history = []
+
+        //        history = []
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        if let navcon = navigationController{
+            if navcon.viewControllers.count == 1{
+                backToRootOutlet.title = ""
+                backToRootOutlet.enabled = false
+            } else {
+                backToRootOutlet.title = "🔙"
+                backToRootOutlet.enabled = true
+            }
+        }
     }
     
     // MARK: - Navigation
@@ -177,4 +190,11 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
     }
+    
+    @IBOutlet weak var backToRootOutlet: UIBarButtonItem!
+    
+    @IBAction func backToRoot(sender: AnyObject) {
+        navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
 }

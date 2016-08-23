@@ -90,7 +90,13 @@
                             <outlet property="delegate" destination="hGM-vP-8rx" id="fIV-T4-1PE"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="PwY-6Y-kf2"/>
+                    <navigationItem key="navigationItem" id="PwY-6Y-kf2">
+                        <barButtonItem key="rightBarButtonItem" title="🔙" id="5dU-tP-kxR">
+                            <connections>
+                                <action selector="backToRoot:" destination="hGM-vP-8rx" id="8nz-eK-zJ2"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="VyN-ai-pu8">
                         <autoresizingMask key="autoresizingMask"/>
                         <attributedString key="attributedTitle">
@@ -106,6 +112,7 @@
                         </connections>
                     </refreshControl>
                     <connections>
+                        <outlet property="backToRootOutlet" destination="5dU-tP-kxR" id="837-ne-yYO"/>
                         <outlet property="searchTextField" destination="puW-wk-gUm" id="UjK-8O-nuh"/>
                     </connections>
                 </tableViewController>
@@ -182,7 +189,13 @@
                             <outlet property="delegate" destination="hsD-1s-oDE" id="az4-e6-Uh4"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Mentions" id="ZN8-VQ-gY6"/>
+                    <navigationItem key="navigationItem" title="Mentions" id="ZN8-VQ-gY6">
+                        <barButtonItem key="rightBarButtonItem" title="🔙" id="dMt-YP-fYj">
+                            <connections>
+                                <action selector="cancel:" destination="hsD-1s-oDE" id="KhI-9W-h8l"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gjg-OZ-FX1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -201,7 +214,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Gq-Ox-KQ2">
-                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -323,6 +336,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ijS-5p-ues"/>
+        <segue reference="hNG-Ui-1bh"/>
     </inferredMetricsTieBreakers>
 </document>
