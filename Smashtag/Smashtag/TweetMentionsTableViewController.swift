@@ -164,7 +164,16 @@ class TweetMentionsTableViewController: UITableViewController {
             case Storyboard.AnotherSearchTableSegue:
                 if let cell = sender as? TweetTextMentionTableViewCell,
                     let seguedToMVC = segue.destinationViewController as? TweetTableViewController {
-                    seguedToMVC.searchText = cell.mentionContent
+                    
+                    var searchText = cell.mentionContent
+                    
+                    if searchText.characters.first! == "@"{
+                        let fromUser = String(searchText.characters.dropFirst())
+                        searchText = searchText + " OR from:" + fromUser
+                        print("user search")
+                    }
+                    
+                    seguedToMVC.searchText = searchText
                 }
             case Storyboard.ShowImageSegue:
                 if let cell = sender as? TweetImageMentionTableViewCell,
