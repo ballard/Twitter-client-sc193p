@@ -57,8 +57,9 @@ class TweetMentionsTableViewController: UITableViewController {
     struct Storyboard {
         static let TextCellIdentifier = "text"
         static let ImageCellIdentifier = "image"
-        static let AnotherSearchTableSegue = "Show table"
+        static let AnotherSearchTableSegue = "Show Table"
         static let ShowImageSegue = "Show Image"
+        static let ShowWEBSegue = "Show Web"
     }
     
     // Lifecycle
@@ -131,18 +132,16 @@ class TweetMentionsTableViewController: UITableViewController {
         }
     }
     
-    private var notURLCell = true
-    
     private var imageLoaded = false
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if sections[indexPath.section].type == SectionTitles.URLs{
-            notURLCell = false
-            if let urlCell = tableView.cellForRowAtIndexPath(indexPath) as? TweetTextMentionTableViewCell {
-                UIApplication.sharedApplication().openURL(NSURL(string: urlCell.mentionContent)!)
-            }
-        } else {
-            notURLCell = true
+        switch sections[indexPath.section].type {
+        case SectionTitles.URLs:
+            performSegueWithIdentifier(Storyboard.ShowWEBSegue, sender: tableView.cellForRowAtIndexPath(indexPath))
+        case SectionTitles.Hashtags, SectionTitles.Users:
+            performSegueWithIdentifier(Storyboard.AnotherSearchTableSegue, sender: tableView.cellForRowAtIndexPath(indexPath))
+        default:
+            break
         }
         return indexPath
     }
@@ -151,7 +150,7 @@ class TweetMentionsTableViewController: UITableViewController {
         if identifier == Storyboard.ShowImageSegue{
             return imageLoaded
         }
-        return notURLCell
+        return true
     }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -164,21 +163,24 @@ class TweetMentionsTableViewController: UITableViewController {
             case Storyboard.AnotherSearchTableSegue:
                 if let cell = sender as? TweetTextMentionTableViewCell,
                     let seguedToMVC = segue.destinationViewController as? TweetTableViewController {
-                    
                     var searchText = cell.mentionContent
-                    
                     if searchText.characters.first! == "@"{
                         let fromUser = String(searchText.characters.dropFirst())
                         searchText = searchText + " OR from:" + fromUser
                         print("user search")
-                    }
-                    
+                    }                    
                     seguedToMVC.searchText = searchText
                 }
             case Storyboard.ShowImageSegue:
                 if let cell = sender as? TweetImageMentionTableViewCell,
                     let seguedToMVC = segue.destinationViewController as? MediaViewController{
                     seguedToMVC.image = cell.mentionImage.image
+                }
+            case Storyboard.ShowWEBSegue:
+                if let cell = sender as? TweetTextMentionTableViewCell,
+                    let seguedToMVC = segue.destinationViewController as? WebUIViewController{
+                    seguedToMVC.title = cell.mentionContent
+                    seguedToMVC.url = NSURL(string: cell.mentionContent)
                 }
             default:
                 break

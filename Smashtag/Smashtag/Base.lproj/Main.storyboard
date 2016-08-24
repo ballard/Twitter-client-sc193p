@@ -150,7 +150,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="mentionText" destination="iKZ-uW-rqQ" id="Y6e-rB-GdQ"/>
-                                    <segue destination="hGM-vP-8rx" kind="show" identifier="Show table" id="hNG-Ui-1bh"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="image" rowHeight="257" id="SrS-zP-kyR" customClass="TweetImageMentionTableViewCell" customModule="Smashtag" customModuleProvider="target">
@@ -196,10 +195,72 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="P2n-py-Ej5" kind="show" identifier="Show Web" id="x4h-aY-jSX"/>
+                        <segue destination="hGM-vP-8rx" kind="show" identifier="Show Table" id="l2t-gW-6e7"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gjg-OZ-FX1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2739" y="51"/>
+            <point key="canvasLocation" x="2743" y="-49"/>
+        </scene>
+        <!--WebUI View Controller-->
+        <scene sceneID="GBS-Mc-eKm">
+            <objects>
+                <viewController id="P2n-py-Ej5" customClass="WebUIViewController" customModule="Smashtag" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Fi8-E2-evg"/>
+                        <viewControllerLayoutGuide type="bottom" id="Lus-6d-yff"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="v4s-E6-vWx">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hkL-4o-iJ7">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="hkL-4o-iJ7" secondAttribute="trailing" id="0Q4-AW-wpX"/>
+                            <constraint firstItem="hkL-4o-iJ7" firstAttribute="leading" secondItem="v4s-E6-vWx" secondAttribute="leading" id="1YH-FH-5uH"/>
+                            <constraint firstItem="hkL-4o-iJ7" firstAttribute="bottom" secondItem="Lus-6d-yff" secondAttribute="top" id="765-9z-ihq"/>
+                            <constraint firstItem="hkL-4o-iJ7" firstAttribute="top" secondItem="Fi8-E2-evg" secondAttribute="bottom" id="TCj-iU-hsF"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems>
+                        <barButtonItem enabled="NO" systemItem="refresh" id="dYf-ly-2q5">
+                            <connections>
+                                <action selector="reloadPage:" destination="P2n-py-Ej5" id="3HZ-4H-S85"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem systemItem="stop" id="oWg-Qz-v5g">
+                            <connections>
+                                <action selector="stop:" destination="P2n-py-Ej5" id="nqJ-q6-zZn"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="⬅︎" id="UAO-zQ-gtq">
+                            <connections>
+                                <action selector="backward:" destination="P2n-py-Ej5" id="18L-xE-paE"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="➡︎" id="Byx-WY-LpL">
+                            <connections>
+                                <action selector="forward:" destination="P2n-py-Ej5" id="Fnd-Di-5q8"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="reloadPageOutlet" destination="dYf-ly-2q5" id="hhc-kF-1cy"/>
+                        <outlet property="stopOutlet" destination="oWg-Qz-v5g" id="RCB-VD-aBL"/>
+                        <outlet property="webView" destination="hkL-4o-iJ7" id="xoC-36-8sz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Uv9-Fq-R0V" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3535" y="-365"/>
         </scene>
         <!--Media View Controller-->
         <scene sceneID="nmX-Cw-O2L">
@@ -231,7 +292,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q4V-7k-g4F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3483" y="43"/>
+            <point key="canvasLocation" x="3803" y="397"/>
         </scene>
         <!--Tweets-->
         <scene sceneID="2GP-oF-Je7">
@@ -336,6 +397,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hNG-Ui-1bh"/>
+        <segue reference="l2t-gW-6e7"/>
     </inferredMetricsTieBreakers>
 </document>
