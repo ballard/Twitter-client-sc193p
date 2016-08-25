@@ -118,7 +118,42 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JiC-Fd-D3P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2829" y="835"/>
+            <point key="canvasLocation" x="3577" y="867"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="klT-94-Ons">
+            <objects>
+                <collectionViewController id="6Xv-na-sFb" customClass="TweetImagesCollectionViewController" customModule="Smashtag" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Hin-3I-cpF">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pJx-M8-ZSD">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="0Hm-Pz-bo7">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="6Xv-na-sFb" id="Bc7-qR-wEg"/>
+                            <outlet property="delegate" destination="6Xv-na-sFb" id="afS-3l-X1N"/>
+                        </connections>
+                    </collectionView>
+                    <tabBarItem key="tabBarItem" title="Item" id="80H-ta-OS3"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kp8-30-2Tb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2175" y="2502"/>
         </scene>
         <!--Mentions-->
         <scene sceneID="bnC-hn-oaM">
@@ -202,7 +237,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gjg-OZ-FX1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2743" y="-49"/>
+            <point key="canvasLocation" x="4289" y="77"/>
         </scene>
         <!--WebUI View Controller-->
         <scene sceneID="GBS-Mc-eKm">
@@ -260,7 +295,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uv9-Fq-R0V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3535" y="-365"/>
+            <point key="canvasLocation" x="5159" y="-377"/>
         </scene>
         <!--Media View Controller-->
         <scene sceneID="nmX-Cw-O2L">
@@ -292,7 +327,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q4V-7k-g4F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3803" y="397"/>
+            <point key="canvasLocation" x="5159" y="411"/>
         </scene>
         <!--Tweets-->
         <scene sceneID="2GP-oF-Je7">
@@ -356,7 +391,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPp-LD-gKg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2829" y="1504"/>
+            <point key="canvasLocation" x="2853" y="1616"/>
         </scene>
         <!--Twet Tab Bar Controller-->
         <scene sceneID="bXu-0u-1Ba">
@@ -370,11 +405,12 @@
                     <connections>
                         <segue destination="NFN-IH-kT2" kind="relationship" relationship="viewControllers" id="Fze-ql-q7x"/>
                         <segue destination="6Uw-X6-2Y9" kind="relationship" relationship="viewControllers" id="MsN-Lm-tWe"/>
+                        <segue destination="6Xv-na-sFb" kind="relationship" relationship="viewControllers" id="ATf-1O-av6"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2TJ-5b-atN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1323" y="1185"/>
+            <point key="canvasLocation" x="1291" y="1941"/>
         </scene>
         <!--Keywords-->
         <scene sceneID="wsD-Zw-nbc">
@@ -397,6 +433,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="l2t-gW-6e7"/>
+        <segue reference="ijS-5p-ues"/>
     </inferredMetricsTieBreakers>
 </document>
