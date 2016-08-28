@@ -15,6 +15,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     var tweets = [Array<Twitter.Tweet>](){
         didSet{
             tableView.reloadData()
+            showImagesBurron.enabled = true
         }
     }
     
@@ -192,6 +193,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBOutlet weak var backToRootOutlet: UIBarButtonItem!
+    
+    @IBOutlet weak var showImagesBurron: UIBarButtonItem!
+    
     
     @IBAction func backToRoot(sender: AnyObject) {
         navigationController?.popToRootViewControllerAnimated(true)

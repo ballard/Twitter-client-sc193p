@@ -7,10 +7,22 @@
 //
 
 import UIKit
+import Twitter
 
 private let reuseIdentifier = "Cell"
 
 class TweetImagesCollectionViewController: UICollectionViewController {
+    
+    // Model
+    var tweets = [Array<Twitter.Tweet>](){
+        didSet{
+            //
+        }
+    }
+    
+    struct Storyboard {
+        let ImageCell = "Image Cell"
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
