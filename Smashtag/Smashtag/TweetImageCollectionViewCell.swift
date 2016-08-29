@@ -11,7 +11,7 @@ import Twitter
 
 class TweetImageCollectionViewCell: UICollectionViewCell {
     
-    var tweet : Tweet?{
+    var tweet : imageData?{
         didSet{
             updateUI()
         }
@@ -24,20 +24,18 @@ class TweetImageCollectionViewCell: UICollectionViewCell {
     private func updateUI(){        
         imageView?.image = nil
         if let tweet = self.tweet{
-            print(String(tweet.media))
-            if let profileImageURL = tweet.user.profileImageURL {
-                imageURL = profileImageURL
-                dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)){
-                    [weak weakSelf = self] in
-                    let contentOfUrl = NSData(contentsOfURL: profileImageURL)
-                    dispatch_async(dispatch_get_main_queue()){
-                        if profileImageURL == weakSelf?.imageURL {
-                            if let imageData = contentOfUrl {
-                                weakSelf?.imageView?.image = UIImage(data: imageData)
-                            }
-                        } else {
-                            print("url dropped")
+            let profileImageURL = tweet.url
+            imageURL = profileImageURL
+            dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)){
+                [weak weakSelf = self] in
+                let contentOfUrl = NSData(contentsOfURL: profileImageURL)
+                dispatch_async(dispatch_get_main_queue()){
+                    if profileImageURL == weakSelf?.imageURL {
+                        if let imageData = contentOfUrl {
+                            weakSelf?.imageView?.image = UIImage(data: imageData)
                         }
+                    } else {
+                        print("url dropped")
                     }
                 }
             }

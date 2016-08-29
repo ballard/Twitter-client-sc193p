@@ -16,6 +16,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         didSet{
             tableView.reloadData()
             showImagesBurron.enabled = true
+            print("tweets: \(tweets)")
         }
     }
     

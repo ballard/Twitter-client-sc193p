@@ -164,6 +164,7 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="imageView" destination="VOs-gl-oGi" id="A7j-vB-jjP"/>
+                                    <segue destination="hGM-vP-8rx" kind="show" identifier="Show Tweet" id="kdc-uX-t8E"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -173,6 +174,9 @@
                         </connections>
                     </collectionView>
                     <tabBarItem key="tabBarItem" title="Item" id="80H-ta-OS3"/>
+                    <connections>
+                        <outlet property="collectionView" destination="Hin-3I-cpF" id="6v6-DI-LDD"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kp8-30-2Tb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -455,6 +459,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="l2t-gW-6e7"/>
+        <segue reference="kdc-uX-t8E"/>
     </inferredMetricsTieBreakers>
 </document>

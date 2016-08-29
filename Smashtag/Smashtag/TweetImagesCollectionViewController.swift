@@ -11,27 +11,57 @@ import Twitter
 
 private let reuseIdentifier = "Cell"
 
-class TweetImagesCollectionViewController: UICollectionViewController {
+struct imageData {
+    var url : NSURL
+    var aspectRatio: Double
+    var tweet : Tweet
+}
+
+
+class TweetImagesCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     // Model
     var tweets = [Array<Twitter.Tweet>](){
         didSet{
+            for section in tweets {
+                for tweet in section {
+                    for media in tweet.media {
+                        imagesData.append(imageData(url: media.url, aspectRatio: media.aspectRatio, tweet: tweet))
+                    }
+                }
+            }
             self.collectionView?.reloadData()
         }
     }
     
+    var imagesData = [imageData]()
+    
     struct Storyboard {
         static let ImageCell = "Image Cell"
+        static let ShowTweet = "Show Tweet"
+    }
+
+    func zoom(recognizer	: UIPinchGestureRecognizer) {
+        switch recognizer.state {
+        case .Began:
+            
+            print("begin")
+        case .Changed:
+            
+            area *= recognizer.scale
+            recognizer.scale = 1.0
+            self.collectionView?.reloadData()
+            print("zoom")
+        default:
+            break
+        }
     }
     
-//    override func viewDidAppear(animated: Bool) {
-//        self.collectionView?.reloadData()
-//    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.collectionView?.reloadData()
-
+        let zoomRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(TweetImagesCollectionViewController.zoom(_:)))
+        self.collectionView!.addGestureRecognizer(zoomRecognizer)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -46,33 +76,43 @@ class TweetImagesCollectionViewController: UICollectionViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let identifier = segue.identifier where identifier == Storyboard.ShowTweet {
+                if let cell = sender as? TweetImageCollectionViewCell,
+                    let indexPath = self.collectionView?.indexPathForCell(cell),
+                    let seguedToMVC = segue.destinationViewController as? TweetTableViewController{
+                    var tweetArray = [Tweet]()
+                    tweetArray.append(imagesData[indexPath.row].tweet)
+                    seguedToMVC.tweets.append(tweetArray)
+                }
+        }
+        
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
     // MARK: UICollectionViewDataSource
 
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return tweets.count
+        return 1
     }
 
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return tweets[section].count
+        return imagesData.count
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Storyboard.ImageCell, forIndexPath: indexPath)
         
-        let tweet = tweets[indexPath.section][indexPath.row]
+        let tweet = imagesData[indexPath.row]
         if let tweetCell = cell as? TweetImageCollectionViewCell{
             tweetCell.tweet = tweet
         }
@@ -80,6 +120,15 @@ class TweetImagesCollectionViewController: UICollectionViewController {
         // Configure the cell
     
         return cell
+    }
+    
+    var area : CGFloat = 25000.0
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let tweet = imagesData[indexPath.row]
+        let size = CGSize( width: sqrt(area * CGFloat(tweet.aspectRatio)),
+                           height: sqrt(area / CGFloat(tweet.aspectRatio)) )
+        return size
     }
 
     // MARK: UICollectionViewDelegate
