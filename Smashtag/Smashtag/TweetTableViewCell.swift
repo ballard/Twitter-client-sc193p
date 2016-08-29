@@ -40,7 +40,7 @@ class TweetTableViewCell: UITableViewCell {
         tweetCreatedLabel?.text = nil
         
         if let tweet = self.tweet{
-            
+                        
             let currentAttributedText = NSMutableAttributedString(string: tweet.text)
             currentAttributedText.setMentionColor(tweet.urls, color: UIColor.redColor())
             currentAttributedText.setMentionColor(tweet.hashtags, color: UIColor.greenColor())

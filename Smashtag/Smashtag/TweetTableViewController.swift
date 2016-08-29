@@ -138,6 +138,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     private struct Storyboard{
         static let TweetCellIdentifier = "Tweet"
         static let ShowMentionSegueIdentifier = "Show Mention"
+        static let ShowImages = "Show Images"
     }
     
     //Outlets
@@ -183,11 +184,19 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if let identifier = segue.identifier where identifier == Storyboard.ShowMentionSegueIdentifier{
-            if let cell = sender as? TweetTableViewCell,
-                let indexPath = tableView.indexPathForCell(cell),
-                let seguedToMVC = segue.destinationViewController as? TweetMentionsTableViewController{
-                seguedToMVC.tweet = tweets[indexPath.section][indexPath.row]
+        if let identifier = segue.identifier{
+            switch identifier {
+            case Storyboard.ShowMentionSegueIdentifier:
+                if let cell = sender as? TweetTableViewCell,
+                    let indexPath = tableView.indexPathForCell(cell),
+                    let seguedToMVC = segue.destinationViewController as? TweetMentionsTableViewController{
+                    seguedToMVC.tweet = tweets[indexPath.section][indexPath.row]
+                }
+            case Storyboard.ShowImages:
+                if let seguedToMVC = segue.destinationViewController as? TweetImagesCollectionViewController {
+                    seguedToMVC.tweets = tweets
+                }
+            default: break
             }
         }
     }
