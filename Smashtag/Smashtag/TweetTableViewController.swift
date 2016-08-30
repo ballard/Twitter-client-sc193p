@@ -163,9 +163,11 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        searchText = history?.last
+        if let lastSearch = history?.last {
+            searchText = lastSearch
+        }
 
-        //        history = []
+//                history = []
     }
     
     override func viewDidAppear(animated: Bool) {
