@@ -44,7 +44,7 @@ class TweetImagesCollectionViewController: UICollectionViewController, UICollect
         if recognizer.state == .Changed {
             area *= recognizer.scale
             recognizer.scale = 1.0
-            self.collectionView?.reloadData()
+            self.collectionView?.collectionViewLayout.invalidateLayout()//reloadData()
             print("zoom")
         }
     }

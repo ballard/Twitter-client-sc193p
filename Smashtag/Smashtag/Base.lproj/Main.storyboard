@@ -180,7 +180,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kp8-30-2Tb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4331" y="867"/>
+            <point key="canvasLocation" x="4331" y="1616"/>
         </scene>
         <!--Mentions-->
         <scene sceneID="bnC-hn-oaM">
@@ -436,7 +436,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2TJ-5b-atN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1291" y="1941"/>
+            <point key="canvasLocation" x="1331" y="1245"/>
         </scene>
         <!--Keywords-->
         <scene sceneID="wsD-Zw-nbc">

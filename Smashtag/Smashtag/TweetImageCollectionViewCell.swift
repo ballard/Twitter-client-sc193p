@@ -18,6 +18,7 @@ class TweetImageCollectionViewCell: UICollectionViewCell {
     }
     
     @IBOutlet weak var imageView: UIImageView!
+    
     var imageURL: NSURL?
     
     var cache = NSCache?()
