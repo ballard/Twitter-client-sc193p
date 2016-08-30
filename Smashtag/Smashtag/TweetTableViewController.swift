@@ -16,7 +16,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         didSet{
             tableView.reloadData()
             showImagesBurron.enabled = true
-            print("tweets: \(tweets)")
+//            print("tweets: \(tweets)")
         }
     }
     
@@ -162,6 +162,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
+        
+        guard tweets.count == 0 else { return }
         
         if let lastSearch = history?.last {
             searchText = lastSearch

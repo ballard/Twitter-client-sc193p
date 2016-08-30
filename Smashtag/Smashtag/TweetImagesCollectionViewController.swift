@@ -22,13 +22,14 @@ class TweetImagesCollectionViewController: UICollectionViewController, UICollect
     // Model
     var tweets = [Array<Twitter.Tweet>](){
         didSet{
-            for section in tweets {
-                for tweet in section {
-                    for media in tweet.media {
-                        imagesData.append(imageData(url: media.url, aspectRatio: media.aspectRatio, tweet: tweet))
-                    }
+            imagesData = tweets.flatMap {
+                $0.flatMap { (tweet) in
+                    tweet.media.map({
+                        imageData(url: $0.url, aspectRatio: $0.aspectRatio, tweet: tweet)
+                    })
                 }
             }
+            
             self.collectionView?.reloadData()
         }
     }
@@ -77,13 +78,13 @@ class TweetImagesCollectionViewController: UICollectionViewController, UICollect
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let identifier = segue.identifier where identifier == Storyboard.ShowTweet {
-                if let cell = sender as? TweetImageCollectionViewCell,
-                    let indexPath = self.collectionView?.indexPathForCell(cell),
-                    let seguedToMVC = segue.destinationViewController as? TweetTableViewController{
-                    var tweetArray = [Tweet]()
-                    tweetArray.append(imagesData[indexPath.row].tweet)
-                    seguedToMVC.tweets.append(tweetArray)
+            if let tweetTable = segue.destinationViewController as? TweetTableViewController {
+                if let cell = sender as? TweetImageCollectionViewCell {
+                    if let tweet = cell.tweet?.tweet{
+                        tweetTable.tweets = [[tweet]]
+                    }
                 }
+            }
         }
         
         // Get the new view controller using [segue destinationViewController].
