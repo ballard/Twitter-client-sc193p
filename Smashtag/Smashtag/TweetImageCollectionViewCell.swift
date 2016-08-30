@@ -18,14 +18,22 @@ class TweetImageCollectionViewCell: UICollectionViewCell {
     }
     
     @IBOutlet weak var imageView: UIImageView!
-    
     var imageURL: NSURL?
+    
+    var cache = NSCache?()
     
     private func updateUI(){        
         imageView?.image = nil
         if let tweet = self.tweet{
             let profileImageURL = tweet.url
             imageURL = profileImageURL
+            
+            if let cachedImage = cache?.objectForKey(imageURL!){
+                imageView.image = UIImage(data: cachedImage as! NSData)
+                print("get image from cache")
+                return
+            }
+            
             dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)){
                 [weak weakSelf = self] in
                 let contentOfUrl = NSData(contentsOfURL: profileImageURL)
@@ -33,6 +41,8 @@ class TweetImageCollectionViewCell: UICollectionViewCell {
                     if profileImageURL == weakSelf?.imageURL {
                         if let imageData = contentOfUrl {
                             weakSelf?.imageView?.image = UIImage(data: imageData)
+                            weakSelf?.cache?.setObject(imageData, forKey: profileImageURL, cost: imageData.length)
+                            print ("imageData.length: \(imageData.length)")
                         }
                     } else {
                         print("url dropped")

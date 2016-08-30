@@ -17,7 +17,6 @@ struct imageData {
     var tweet : Tweet
 }
 
-
 class TweetImagesCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     // Model
@@ -41,19 +40,12 @@ class TweetImagesCollectionViewController: UICollectionViewController, UICollect
         static let ShowTweet = "Show Tweet"
     }
 
-    func zoom(recognizer	: UIPinchGestureRecognizer) {
-        switch recognizer.state {
-        case .Began:
-            
-            print("begin")
-        case .Changed:
-            
+    func zoom(recognizer : UIPinchGestureRecognizer) {
+        if recognizer.state == .Changed {
             area *= recognizer.scale
             recognizer.scale = 1.0
             self.collectionView?.reloadData()
             print("zoom")
-        default:
-            break
         }
     }
     
@@ -61,6 +53,9 @@ class TweetImagesCollectionViewController: UICollectionViewController, UICollect
         super.viewDidLoad()
         let zoomRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(TweetImagesCollectionViewController.zoom(_:)))
         self.collectionView!.addGestureRecognizer(zoomRecognizer)
+        
+        cache.countLimit = 100
+        cache.totalCostLimit = 100000000
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -115,12 +110,15 @@ class TweetImagesCollectionViewController: UICollectionViewController, UICollect
         let tweet = imagesData[indexPath.row]
         if let tweetCell = cell as? TweetImageCollectionViewCell{
             tweetCell.tweet = tweet
+            tweetCell.cache = cache
         }
     
         // Configure the cell
     
         return cell
     }
+    
+    let cache = NSCache()
     
     var area : CGFloat = 25000.0
     

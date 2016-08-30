@@ -420,10 +420,10 @@
             </objects>
             <point key="canvasLocation" x="2853" y="1616"/>
         </scene>
-        <!--Twet Tab Bar Controller-->
+        <!--Tab Bar Controller-->
         <scene sceneID="bXu-0u-1Ba">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="HjC-XL-2Qi" customClass="TwetTabBarController" customModule="Smashtag" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="HjC-XL-2Qi" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="qwq-89-p3l">
                         <autoresizingMask key="autoresizingMask"/>
