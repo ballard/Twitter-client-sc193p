@@ -15,7 +15,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     var tweets = [Array<Twitter.Tweet>](){
         didSet{
             tableView.reloadData()
-            showImagesBurron.enabled = true
+            
 //            print("tweets: \(tweets)")
         }
     }
@@ -93,6 +93,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                     if request == weakSelf?.lastTwitterRequest{
                         if !newTweets.isEmpty {
                             weakSelf?.tweets.insert(newTweets, atIndex: 0)
+                            weakSelf?.showImagesBurron.enabled = true
                         }
                     }
                     weakSelf?.refreshControl?.endRefreshing()
@@ -163,7 +164,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        guard tweets.count == 0 else { return }
+        guard searchText == nil && tweets.count == 0 else { return }
         
         if let lastSearch = history?.last {
             searchText = lastSearch
