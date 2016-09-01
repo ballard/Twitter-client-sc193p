@@ -25,9 +25,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             tweets.removeAll()
             lastTwitterRequest = nil
             searchForTweets()
-            title = searchText!
+            title = searchText
+            navigationController?.title = "Tweets"
             updateHistory(searchText!)
-//            print("\(searchText!)")
         }
     }
     
@@ -168,9 +168,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         
         if let lastSearch = history?.last {
             searchText = lastSearch
+            searchTextField.text = lastSearch
+        
         }
-
-//                history = []
     }
     
     override func viewDidAppear(animated: Bool) {

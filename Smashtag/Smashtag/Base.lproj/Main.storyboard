@@ -144,7 +144,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Image Cell" id="0Hm-Pz-bo7" customClass="TweetImageCollectionViewCell" customModule="Smashtag" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <rect key="frame" x="0.0" y="64" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -459,6 +459,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="l2t-gW-6e7"/>
+        <segue reference="Wq6-yU-GHg"/>
     </inferredMetricsTieBreakers>
 </document>
