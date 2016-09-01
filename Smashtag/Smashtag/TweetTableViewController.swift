@@ -170,6 +170,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             searchText = lastSearch
             searchTextField.text = lastSearch
         
+        } else {
+            title = "Tweets"
         }
     }
     
