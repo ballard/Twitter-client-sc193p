@@ -2,7 +2,7 @@
 //  SearchTerm+CoreDataProperties.swift
 //  Smashtag
 //
-//  Created by Ivan on 07.09.16.
+//  Created by Иван Лазарев on 07.09.16.
 //  Copyright © 2016 Ivan Lazarev. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
