@@ -13,5 +13,18 @@ import CoreData
 class SearchTerm: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
-
+    
+    class func searchTermWithSearchTermInfo(searchTermInfo: String, inManagedObjectContext context: NSManagedObjectContext) -> SearchTerm? {
+        let request = NSFetchRequest(entityName: "SearchTerm")
+        request.predicate = NSPredicate(format: "value = %@", searchTermInfo)
+        if let searchTerm = (try? context.executeFetchRequest(request))?.first as? SearchTerm {
+            return searchTerm
+        } else {
+            if let searchTerm = NSEntityDescription.insertNewObjectForEntityForName("SearchTerm", inManagedObjectContext: context) as? SearchTerm {
+                searchTerm.value = searchTermInfo
+                return searchTerm
+            }
+        }
+        return nil
+    }
 }

@@ -8,10 +8,43 @@
 
 import UIKit
 import Twitter
+import CoreData
 
 class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     // Model
+    var context : UIManagedDocument? //{
+//        let coreDataFileManager = NSFileManager.defaultManager()
+//        if let coreDataFileDir = coreDataFileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first {
+//            let url = coreDataFileDir.URLByAppendingPathComponent("TwitterDocument")
+//            let document = UIManagedDocument(fileURL: url)
+//            
+//            if document.documentState == .Normal {
+//                print("document normal")
+//                return document
+//            }
+//            
+//            if document.documentState == .Closed {
+//                if let path = url.path {
+//                    let fileExists = NSFileManager.defaultManager().fileExistsAtPath(path)
+//                    if fileExists {
+//                        print("opening document")
+//                        document.openWithCompletionHandler({ (success) in
+//                            return document
+//                        })
+//                    } else {
+//                        print("creating document")
+//                        document.saveToURL(url, forSaveOperation: .ForCreating, completionHandler: { (success) in
+//                            return document
+//                        })
+//                    }
+//                }
+//            }
+//        }
+//        print("document fail")
+//        return nil
+//    }
+    
     var tweets = [Array<Twitter.Tweet>](){
         didSet{
             tableView.reloadData()
@@ -94,6 +127,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                         if !newTweets.isEmpty {
                             weakSelf?.tweets.insert(newTweets, atIndex: 0)
                             weakSelf?.showImagesBurron.enabled = true
+                            weakSelf?.updateDatabase(newTweets)
                         }
                     }
                     weakSelf?.refreshControl?.endRefreshing()
@@ -101,6 +135,35 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             }
         } else {
             self.refreshControl?.endRefreshing()
+        }
+    }
+    
+    private func updateDatabase(newTweets: [Twitter.Tweet]){
+        context?.managedObjectContext.performBlock {
+            print("block performed")
+            for twitterInfo in newTweets{
+                _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: (self.context?.managedObjectContext)!)
+            }
+//            do {
+//                try self.managedObjectContext!.save()
+//            }
+//            catch let error {
+//                print("Core Data Error: \(error )")
+//            }
+        }
+        printDatabaseStatistics()
+        print("done print database statistics")
+    }
+    
+    
+    private func printDatabaseStatistics(){
+        context?.managedObjectContext.performBlock{
+            let tweetCount = self.context?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
+            print("\(tweetCount!) Tweets")
+            let mentionsCount = self.context?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
+            print("\(mentionsCount!) Mentions")
+            let searchTermsCont = self.context?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
+            print("\(searchTermsCont!) SearchTerms")
         }
     }
     
@@ -161,6 +224,39 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     //Lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let coreDataFileManager = NSFileManager.defaultManager()
+        if let coreDataFileDir = coreDataFileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first {
+            let url = coreDataFileDir.URLByAppendingPathComponent("TwitterDocument")
+            let document = UIManagedDocument(fileURL: url)
+            
+            if document.documentState == .Normal {
+                print("document normal")
+                context = document
+            }
+            
+            if document.documentState == .Closed {
+                if let path = url.path {
+                    let fileExists = NSFileManager.defaultManager().fileExistsAtPath(path)
+                    if fileExists {
+                        print("opening document")
+                        document.openWithCompletionHandler({ (success) in
+                            return self.context = document
+                        })
+                    } else {
+                        print("creating document")
+                        document.saveToURL(url, forSaveOperation: .ForCreating, completionHandler: { (success) in
+                            return self.context = document
+                        })
+                    }
+                }
+            }
+        }
+        
+
+        
+        
+        
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
