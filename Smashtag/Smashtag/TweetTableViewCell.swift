@@ -10,7 +10,7 @@ import UIKit
 import Twitter
 
 extension NSMutableAttributedString{
-    func setMentionColor(mentions: [Mention], color: UIColor) {
+    func setMentionColor(mentions: [Twitter.Mention], color: UIColor) {
         for mention in mentions{
             addAttribute(NSForegroundColorAttributeName, value: color, range: mention.nsrange)
         }

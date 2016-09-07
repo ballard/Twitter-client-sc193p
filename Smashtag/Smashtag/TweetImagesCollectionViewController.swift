@@ -14,7 +14,7 @@ private let reuseIdentifier = "Cell"
 struct imageData {
     var url : NSURL
     var aspectRatio: Double
-    var tweet : Tweet
+    var tweet : Twitter.Tweet
 }
 
 class TweetImagesCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {

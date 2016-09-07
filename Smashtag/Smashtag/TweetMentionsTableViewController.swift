@@ -19,7 +19,7 @@ class TweetMentionsTableViewController: UITableViewController {
     }
     
     // Model    
-    var tweet : Tweet?{
+    var tweet : Twitter.Tweet?{
         didSet{
             if let mediaMentionItems = tweet?.media.map({ MensionItem.Image($0.url, $0.aspectRatio) }) {
                 sections.append(Section(type: SectionTitles.Images, mensions: mediaMentionItems))
@@ -30,7 +30,7 @@ class TweetMentionsTableViewController: UITableViewController {
         }
     }
     
-    private func appendTextMension(mension: [Mention], forMensionType type: String){
+    private func appendTextMension(mension: [Twitter.Mention], forMensionType type: String){
         var mensionItem = mension.map({ MensionItem.Keyword($0.keyword) })
         if type == SectionTitles.Users{
             if let currentTweet = tweet{
