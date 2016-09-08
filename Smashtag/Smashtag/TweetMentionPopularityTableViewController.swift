@@ -100,7 +100,6 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Mention Rating", forIndexPath: indexPath)
         
         // Configure the cell...
-        print("mention cell")
         if let mention = fetchedResultsController?.objectAtIndexPath(indexPath) as? Mention {
             var mentionValue : String?
             var mentionRate : Int?
