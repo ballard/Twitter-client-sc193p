@@ -13,37 +13,7 @@ import CoreData
 class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     // Model
-    var managedDocument : UIManagedDocument? //{
-//        let coreDataFileManager = NSFileManager.defaultManager()
-//        if let coreDataFileDir = coreDataFileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first {
-//            let url = coreDataFileDir.URLByAppendingPathComponent("TwitterDocument")
-//            let document = UIManagedDocument(fileURL: url)
-//            
-//            if document.documentState == .Normal {
-//                print("document normal")
-//                return document
-//            }
-//            
-//            if document.documentState == .Closed {
-//                if let path = url.path {
-//                    let fileExists = NSFileManager.defaultManager().fileExistsAtPath(path)
-//                    if fileExists {
-//                        print("opening document")
-//                        document.openWithCompletionHandler({ (success) in
-//                            return document
-//                        })
-//                    } else {
-//                        print("creating document")
-//                        document.saveToURL(url, forSaveOperation: .ForCreating, completionHandler: { (success) in
-//                            return document
-//                        })
-//                    }
-//                }
-//            }
-//        }
-//        print("document fail")
-//        return nil
-//    }
+    var managedDocument : UIManagedDocument? 
     
     var tweets = [Array<Twitter.Tweet>](){
         didSet{
@@ -142,7 +112,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         managedDocument?.managedObjectContext.performBlock {
             print("block performed")
             for twitterInfo in newTweets{
-                _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: (self.managedDocument?.managedObjectContext)!)
+                if let context = self.managedDocument?.managedObjectContext{
+                    _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
+                }
             }
         }
         printDatabaseStatistics()
@@ -234,14 +206,24 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                     let fileExists = NSFileManager.defaultManager().fileExistsAtPath(path)
                     if fileExists {
                         print("opening document")
-                        document.openWithCompletionHandler({ (success) in
-                            return self.managedDocument = document
-                        })
+                        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
+                            document.openWithCompletionHandler({ (success) in
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    print("opened")
+                                    return self.managedDocument = document
+                                }
+                            })
+                        }
                     } else {
                         print("creating document")
-                        document.saveToURL(url, forSaveOperation: .ForCreating, completionHandler: { (success) in
-                            return self.managedDocument = document
-                        })
+                        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
+                            document.saveToURL(url, forSaveOperation: .ForCreating, completionHandler: { (success) in
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    print("created")
+                                    return self.managedDocument = document
+                                }
+                            })
+                        }
                     }
                 }
             }

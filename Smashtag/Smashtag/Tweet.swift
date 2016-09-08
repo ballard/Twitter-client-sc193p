@@ -27,31 +27,18 @@ class Tweet: NSManagedObject {
                 tweet.text = twitterInfo.text
                 tweet.created = twitterInfo.created
                 
-                
-                
-                let searchTerm = SearchTerm.searchTermWithSearchTermInfo(termInfo, inManagedObjectContext: context)
+                let searchTerm = SearchTerm.searchTermWithSearchTermInfo(termInfo.lowercaseString, inManagedObjectContext: context)
                 tweet.addSearchTermsObject(searchTerm!)
                 
-//                tweet.searchTerms?.setValue(searchTerm, forKey: termInfo)
-                
                 for hashtag in twitterInfo.hashtags {
-                    let mention = Mention.mentionWithMentionInfo(hashtag, withMentionType: "hashtag", inManagedObjectContext: context)
-//                    print("mention: \(mention)")
+                    let mention = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "hashtag", inManagedObjectContext: context)
                     tweet.addMentionsObject(mention!)
-//                    let manyRelation = mention!.valueForKeyPath("mentions") as! NSMutableSet
-//                    manyRelation.addObject(mention!)//
-//                    tweet.mentions?.setValue(mention, forKey: hashtag.keyword)
                 }
                 
                 for userMention in twitterInfo.userMentions {
-                    let mention = Mention.mentionWithMentionInfo(userMention, withMentionType: "userMention", inManagedObjectContext: context)
-                    
+                    let mention = Mention.mentionWithMentionInfo(userMention.keyword.lowercaseString, withMentionType: "userMention", inManagedObjectContext: context)
                     tweet.addMentionsObject(mention!)
-//                    print("mention: \(mention)")
-//                    tweet.mentions?.setValue(mention, forKey: userMention.keyword)
                 }
-                
-//                print("tweet: \(tweet)")
                 
                 return tweet
             }
