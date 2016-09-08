@@ -19,18 +19,20 @@ class Mention: NSManagedObject {
     class func mentionWithMentionInfo(mentionInfo: Twitter.Mention, withMentionType mentionType: String, inManagedObjectContext context: NSManagedObjectContext) -> Mention? {
         
         let request = NSFetchRequest(entityName: "Mention")
-        request.predicate = NSPredicate(format: "value = %@", mentionInfo)
+        request.predicate = NSPredicate(format: "value = %@", mentionInfo.keyword)
         
         if let mention = (try? context.executeFetchRequest(request))?.first as? Mention {
             var mentionRate = Int(mention.rate!)
             mentionRate += 1
             mention.rate! = mentionRate
+//            print("mention tweets: \(mention.tweets)")
             return mention
         } else {
             if let mention = NSEntityDescription.insertNewObjectForEntityForName("Mention", inManagedObjectContext: context) as? Mention{
                 mention.value = mentionInfo.keyword
                 mention.type = mentionType
                 mention.rate = 1
+//                print("mention tweets: \(mention.tweets)")
                 return mention
             }
         }

@@ -17,6 +17,7 @@ class SearhKeywordsTableViewController: UITableViewController {
     private struct Storyboard{
         static let KeywordCell = "Search Keyword"
         static let HistorySearchSegue = "History Search Segue"
+        static let PopularityTableSegue = "Show Mention Popularity"
     }
     
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -94,14 +95,23 @@ class SearhKeywordsTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        if let identifier = segue.identifier where identifier == Storyboard.HistorySearchSegue {
-            if let cell = sender as? SearchKeywordTableViewCell,
-                let seguedToMVC = segue.destinationViewController as? TweetTableViewController {
-                seguedToMVC.searchText = cell.keywordValue
+        if let identifier = segue.identifier {
+            switch identifier {
+            case Storyboard.HistorySearchSegue:
+                if let cell = sender as? SearchKeywordTableViewCell,
+                    let seguedToMVC = segue.destinationViewController as? TweetTableViewController {
+                    seguedToMVC.searchText = cell.keywordValue
+                }
+            case Storyboard.PopularityTableSegue:
+                if let cell = sender as? SearchKeywordTableViewCell,
+                    let seguedToMVC = segue.destinationViewController as? TweetMentionPopularityTableViewController {
+                    seguedToMVC.searchTerm = cell.keywordValue
+                }
+            default:
+                break
             }
         }
     }
-
     
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

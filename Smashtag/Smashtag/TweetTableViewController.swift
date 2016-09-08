@@ -13,7 +13,7 @@ import CoreData
 class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     // Model
-    var context : UIManagedDocument? //{
+    var managedDocument : UIManagedDocument? //{
 //        let coreDataFileManager = NSFileManager.defaultManager()
 //        if let coreDataFileDir = coreDataFileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first {
 //            let url = coreDataFileDir.URLByAppendingPathComponent("TwitterDocument")
@@ -139,17 +139,11 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     private func updateDatabase(newTweets: [Twitter.Tweet]){
-        context?.managedObjectContext.performBlock {
+        managedDocument?.managedObjectContext.performBlock {
             print("block performed")
             for twitterInfo in newTweets{
-                _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: (self.context?.managedObjectContext)!)
+                _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: (self.managedDocument?.managedObjectContext)!)
             }
-//            do {
-//                try self.managedObjectContext!.save()
-//            }
-//            catch let error {
-//                print("Core Data Error: \(error )")
-//            }
         }
         printDatabaseStatistics()
         print("done print database statistics")
@@ -157,12 +151,12 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     
     private func printDatabaseStatistics(){
-        context?.managedObjectContext.performBlock{
-            let tweetCount = self.context?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
+        managedDocument?.managedObjectContext.performBlock{
+            let tweetCount = self.managedDocument?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
             print("\(tweetCount!) Tweets")
-            let mentionsCount = self.context?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
+            let mentionsCount = self.managedDocument?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
             print("\(mentionsCount!) Mentions")
-            let searchTermsCont = self.context?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
+            let searchTermsCont = self.managedDocument?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
             print("\(searchTermsCont!) SearchTerms")
         }
     }
@@ -232,7 +226,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             
             if document.documentState == .Normal {
                 print("document normal")
-                context = document
+                managedDocument = document
             }
             
             if document.documentState == .Closed {
@@ -241,21 +235,17 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                     if fileExists {
                         print("opening document")
                         document.openWithCompletionHandler({ (success) in
-                            return self.context = document
+                            return self.managedDocument = document
                         })
                     } else {
                         print("creating document")
                         document.saveToURL(url, forSaveOperation: .ForCreating, completionHandler: { (success) in
-                            return self.context = document
+                            return self.managedDocument = document
                         })
                     }
                 }
             }
         }
-        
-
-        
-        
         
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension

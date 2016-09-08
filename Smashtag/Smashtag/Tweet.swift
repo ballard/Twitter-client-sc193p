@@ -26,18 +26,32 @@ class Tweet: NSManagedObject {
                 tweet.unique = twitterInfo.id
                 tweet.text = twitterInfo.text
                 tweet.created = twitterInfo.created
+                
+                
+                
                 let searchTerm = SearchTerm.searchTermWithSearchTermInfo(termInfo, inManagedObjectContext: context)
-                tweet.searchTerms?.setValue(searchTerm, forKey: termInfo)
+                tweet.addSearchTermsObject(searchTerm!)
+                
+//                tweet.searchTerms?.setValue(searchTerm, forKey: termInfo)
                 
                 for hashtag in twitterInfo.hashtags {
                     let mention = Mention.mentionWithMentionInfo(hashtag, withMentionType: "hashtag", inManagedObjectContext: context)
-                    tweet.mentions?.setValue(mention, forKey: hashtag.keyword)
+//                    print("mention: \(mention)")
+                    tweet.addMentionsObject(mention!)
+//                    let manyRelation = mention!.valueForKeyPath("mentions") as! NSMutableSet
+//                    manyRelation.addObject(mention!)//
+//                    tweet.mentions?.setValue(mention, forKey: hashtag.keyword)
                 }
                 
                 for userMention in twitterInfo.userMentions {
                     let mention = Mention.mentionWithMentionInfo(userMention, withMentionType: "userMention", inManagedObjectContext: context)
-                    tweet.mentions?.setValue(mention, forKey: userMention.keyword)
+                    
+                    tweet.addMentionsObject(mention!)
+//                    print("mention: \(mention)")
+//                    tweet.mentions?.setValue(mention, forKey: userMention.keyword)
                 }
+                
+//                print("tweet: \(tweet)")
                 
                 return tweet
             }

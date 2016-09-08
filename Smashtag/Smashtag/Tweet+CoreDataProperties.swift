@@ -19,5 +19,11 @@ extension Tweet {
     @NSManaged var unique: String?
     @NSManaged var mentions: NSSet?
     @NSManaged var searchTerms: NSSet?
+    
+    @NSManaged func addMentionsObject(mension: Mention)
+    @NSManaged func addMentions(mensions: NSSet)
+    
+    @NSManaged func addSearchTermsObject(searchTerm: SearchTerm)
+    @NSManaged func addSearchTerms(searchTerms: NSSet)
 
 }
