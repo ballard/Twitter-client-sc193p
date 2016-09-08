@@ -16,14 +16,12 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
     var managedDocument : UIManagedDocument? {
         didSet {
             printDatabaseStatistics()
-            print("searchTerm: \(searchTerm!)")
             updateUI()
         }
     }
     
     private func updateUI() {
         if let context = managedDocument?.managedObjectContext where searchTerm?.characters.count > 0 {
-            print("setting request")
             let request = NSFetchRequest(entityName: "Mention")
             request.predicate = NSPredicate(format: "SUBQUERY(tweets, $tweet, any $tweet.searchTerms.value contains[c] %@).@count != 0", searchTerm!)
             request.sortDescriptors = [
@@ -41,7 +39,6 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
                 managedObjectContext: context,
                 sectionNameKeyPath: nil,
                 cacheName: nil)
-            print("fetchedResultsController setted")
         } else {
             fetchedResultsController = nil
         }
@@ -105,7 +102,6 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
         // Configure the cell...
         print("mention cell")
         if let mention = fetchedResultsController?.objectAtIndexPath(indexPath) as? Mention {
-            print("mention: \(mention)")
             var mentionValue : String?
             var mentionRate : Int?
             mention.managedObjectContext?.performBlockAndWait {

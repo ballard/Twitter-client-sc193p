@@ -16,17 +16,7 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
                 if let frc = fetchedResultsController {
                     frc.delegate = self
                     try frc.performFetch()
-//                    print("fetched objects: \(frc.fetchedObjects!)")
-                    
-                    for object in frc.fetchedObjects! {
-                        if let mention = object as? Mention {
-                            print("mention value: \(mention.value!)")
-                        }
-                    }
-                    print("fetched objects count: \(frc.fetchedObjects!.count)")
                 }
-                
-                print("controller setted, reloading data...")
                 tableView.reloadData()
             } catch let error {
                 print("NSFetchedResultsController.performFetch() failed: \(error)")
@@ -37,14 +27,11 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
     // MARK: UITableViewDataSource
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        print("trying to count sections")
         return fetchedResultsController?.sections?.count ?? 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("trying to count rows")
         if let sections = fetchedResultsController?.sections where sections.count > 0 {
-            print("number of rows: \(sections[section].numberOfObjects)")
             return sections[section].numberOfObjects
         } else {
             return 0
@@ -52,7 +39,6 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        print("trying to count rows4")
         if let sections = fetchedResultsController?.sections where sections.count > 0 {
             return sections[section].name
         } else {
@@ -61,20 +47,16 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
     }
     
     override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
-        print("trying to count rows1")
-        print("fetched objects1: \(fetchedResultsController?.sectionIndexTitles)")
         return fetchedResultsController?.sectionIndexTitles
     }
     
     override func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        print("trying to count rows2")
         return fetchedResultsController?.sectionForSectionIndexTitle(title, atIndex: index) ?? 0
     }
     
     // MARK: NSFetchedResultsControllerDelegate
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        print("trying to count rows3")
         tableView.beginUpdates()
     }
     
