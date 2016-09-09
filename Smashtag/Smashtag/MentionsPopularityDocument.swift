@@ -9,6 +9,9 @@
 import UIKit
 
 class ManagedDocument {
+    
+    static let sharedInstance = ManagedDocument()
+    
     var document : UIManagedDocument?
     
     init(){

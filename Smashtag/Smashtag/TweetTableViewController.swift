@@ -13,8 +13,6 @@ import CoreData
 class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     // Model
-    let managedDocument = ManagedDocument()
-    
     var tweets = [Array<Twitter.Tweet>](){
         didSet{
             tableView.reloadData()
@@ -107,10 +105,10 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     private func updateDatabase(newTweets: [Twitter.Tweet]){
-        managedDocument.document?.managedObjectContext.performBlock {
+        ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock {
             print("block performed")
             for twitterInfo in newTweets{
-                if let context = self.managedDocument.document?.managedObjectContext{
+                if let context = ManagedDocument.sharedInstance.document?.managedObjectContext{
                     _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
                 }
             }
@@ -120,12 +118,12 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }    
     
     private func printDatabaseStatistics(){
-        managedDocument.document?.managedObjectContext.performBlock{
-            let tweetCount = self.managedDocument.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
+        ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock{
+            let tweetCount = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
             print("\(tweetCount!) Tweets")
-            let mentionsCount = self.managedDocument.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
+            let mentionsCount = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
             print("\(mentionsCount!) Mentions")
-            let searchTermsCont = self.managedDocument.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
+            let searchTermsCont = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
             print("\(searchTermsCont!) SearchTerms")
         }
     }
@@ -188,6 +186,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ManagedDocument.sharedInstance
+        
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
@@ -203,6 +203,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func viewDidAppear(animated: Bool) {
+        
+        
+        
         if let navcon = navigationController{
             if navcon.viewControllers.count == 1{
                 backToRootOutlet.title = ""
