@@ -24,6 +24,10 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
             request.predicate = NSPredicate(format: "SUBQUERY(tweets, $tweet, any $tweet.searchTerms.value contains[c] %@).@count > 1", searchTerm!)
             request.sortDescriptors = [
                 NSSortDescriptor(
+                    key: "type",
+                    ascending: false,
+                    selector: nil),
+                NSSortDescriptor(
                     key: "rate",
                     ascending: false,
                     selector: nil),
@@ -35,7 +39,7 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
             fetchedResultsController = NSFetchedResultsController(
                 fetchRequest: request,
                 managedObjectContext: context,
-                sectionNameKeyPath: nil,
+                sectionNameKeyPath: "type",
                 cacheName: nil)
         } else {
             fetchedResultsController = nil

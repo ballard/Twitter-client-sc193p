@@ -104,11 +104,11 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
-    private func updateDatabase(newTweets: [Twitter.Tweet]){
+    private func updateDatabase(newTweets: [Twitter.Tweet]) {
         ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock {
             print("block performed")
             for twitterInfo in newTweets{
-                if let context = ManagedDocument.sharedInstance.document?.managedObjectContext{
+                if let context = ManagedDocument.sharedInstance.document?.managedObjectContext {
                     _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
                 }
             }
@@ -203,9 +203,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func viewDidAppear(animated: Bool) {
-        
-        
-        
         if let navcon = navigationController{
             if navcon.viewControllers.count == 1{
                 backToRootOutlet.title = ""
