@@ -13,13 +13,11 @@ import CoreData
 class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     // Model
-    var managedDocument : UIManagedDocument? 
+    let managedDocument = ManagedDocument()
     
     var tweets = [Array<Twitter.Tweet>](){
         didSet{
             tableView.reloadData()
-            
-//            print("tweets: \(tweets)")
         }
     }
     
@@ -109,26 +107,25 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     private func updateDatabase(newTweets: [Twitter.Tweet]){
-        managedDocument?.managedObjectContext.performBlock {
+        managedDocument.document?.managedObjectContext.performBlock {
             print("block performed")
             for twitterInfo in newTweets{
-                if let context = self.managedDocument?.managedObjectContext{
+                if let context = self.managedDocument.document?.managedObjectContext{
                     _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
                 }
             }
         }
         printDatabaseStatistics()
         print("done print database statistics")
-    }
-    
+    }    
     
     private func printDatabaseStatistics(){
-        managedDocument?.managedObjectContext.performBlock{
-            let tweetCount = self.managedDocument?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
+        managedDocument.document?.managedObjectContext.performBlock{
+            let tweetCount = self.managedDocument.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
             print("\(tweetCount!) Tweets")
-            let mentionsCount = self.managedDocument?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
+            let mentionsCount = self.managedDocument.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
             print("\(mentionsCount!) Mentions")
-            let searchTermsCont = self.managedDocument?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
+            let searchTermsCont = self.managedDocument.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
             print("\(searchTermsCont!) SearchTerms")
         }
     }
@@ -191,44 +188,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let coreDataFileManager = NSFileManager.defaultManager()
-        if let coreDataFileDir = coreDataFileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first {
-            let url = coreDataFileDir.URLByAppendingPathComponent("TwitterDocument")
-            let document = UIManagedDocument(fileURL: url)
-            
-            if document.documentState == .Normal {
-                print("document normal")
-                managedDocument = document
-            }
-            
-            if document.documentState == .Closed {
-                if let path = url.path {
-                    let fileExists = NSFileManager.defaultManager().fileExistsAtPath(path)
-                    if fileExists {
-                        print("opening document")
-                        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
-                            document.openWithCompletionHandler({ (success) in
-                                dispatch_async(dispatch_get_main_queue()) {
-                                    print("opened")
-                                    return self.managedDocument = document
-                                }
-                            })
-                        }
-                    } else {
-                        print("creating document")
-                        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
-                            document.saveToURL(url, forSaveOperation: .ForCreating, completionHandler: { (success) in
-                                dispatch_async(dispatch_get_main_queue()) {
-                                    print("created")
-                                    return self.managedDocument = document
-                                }
-                            })
-                        }
-                    }
-                }
-            }
-        }
-        
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
@@ -280,12 +239,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBOutlet weak var backToRootOutlet: UIBarButtonItem!
-    
     @IBOutlet weak var showImagesBurron: UIBarButtonItem!
-    
     
     @IBAction func backToRoot(sender: AnyObject) {
         navigationController?.popToRootViewControllerAnimated(true)
     }
-    
 }

@@ -12,16 +12,15 @@ import CoreData
 class TweetMentionPopularityTableViewController: CoreDataTableViewController {
 
     var searchTerm : String?
+    let managedDocument = ManagedDocument()
     
-    var managedDocument : UIManagedDocument? {
-        didSet {
-//            printDatabaseStatistics()
-            updateUI()
-        }
+    override func viewDidAppear(animated: Bool) {
+        printDatabaseStatistics()
+        updateUI()
     }
     
     private func updateUI() {
-        if let context = managedDocument?.managedObjectContext where searchTerm?.characters.count > 0 {
+        if let context = managedDocument.document?.managedObjectContext where searchTerm?.characters.count > 0 {
             let request = NSFetchRequest(entityName: "Mention")
             request.predicate = NSPredicate(format: "SUBQUERY(tweets, $tweet, any $tweet.searchTerms.value contains[c] %@).@count > 1", searchTerm!)
             request.sortDescriptors = [
@@ -44,71 +43,33 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
         }
     }
     
-//    private func printDatabaseStatistics() {
-//        managedDocument?.managedObjectContext.performBlock{
-//            let tweetCount = self.managedDocument?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
-//            print("\(tweetCount!) Tweets")
-//            let mentionsCount = self.managedDocument?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
-//            print("\(mentionsCount!) Mentions")
-//            
-////            if let results = try? self.managedDocument?.managedObjectContext.executeFetchRequest(NSFetchRequest(entityName: "Mention")) {
-////                for result in results! {
-////                    if let mention = result as? Mention{
-////                        print("mention value: \(mention.value!)")
-////                    }
-////                }
-////                print("\(results!.count) TwitterUsers")
-////            }
-//            
-//            let searchTermsCont = self.managedDocument?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
-//            print("\(searchTermsCont!) SearchTerms")
-//        }
-//    }
-    
-    override func viewDidAppear(animated: Bool) {
-        let coreDataFileManager = NSFileManager.defaultManager()
-        if let coreDataFileDir = coreDataFileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first {
-            let url = coreDataFileDir.URLByAppendingPathComponent("TwitterDocument")
-            let document = UIManagedDocument(fileURL: url)
+    private func printDatabaseStatistics() {
+        managedDocument.document?.managedObjectContext.performBlock{
+            let tweetCount = self.managedDocument.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
+            print("\(tweetCount!) Tweets")
+            let mentionsCount = self.managedDocument.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
+            print("\(mentionsCount!) Mentions")
             
-            if document.documentState == .Normal {
-                print("document normal")
-                managedDocument = document
-            }
+//            if let results = try? self.managedDocument?.managedObjectContext.executeFetchRequest(NSFetchRequest(entityName: "Mention")) {
+//                for result in results! {
+//                    if let mention = result as? Mention{
+//                        print("mention value: \(mention.value!)")
+//                    }
+//                }
+//                print("\(results!.count) TwitterUsers")
+//            }
             
-            if document.documentState == .Closed {
-                if let path = url.path {
-                    let fileExists = NSFileManager.defaultManager().fileExistsAtPath(path)
-                    if fileExists {
-                        print("opening document")
-                        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
-                            document.openWithCompletionHandler({ (success) in
-                                dispatch_async(dispatch_get_main_queue()) {
-                                    return self.managedDocument = document
-                                }
-                            })
-                        }
-                    } else {
-                        print("creating document")
-                        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
-                            document.saveToURL(url, forSaveOperation: .ForCreating, completionHandler: { (success) in
-                                dispatch_async(dispatch_get_main_queue()) {
-                                    return self.managedDocument = document
-                                }
-                            })
-                        }
-                    }
-                }
-            }
+            let searchTermsCont = self.managedDocument.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
+            print("\(searchTermsCont!) SearchTerms")
         }
-    }
+    }    
     
     private func mentionCountInTweets(mention: Mention) -> Int?{
         var count: Int?
-        managedDocument?.managedObjectContext.performBlockAndWait{
+        managedDocument.document?.managedObjectContext.performBlockAndWait{
             let request = NSFetchRequest(entityName: "Tweet")
             request.predicate = NSPredicate(format: "text contains[c] %@ and any searchTerms.value == %@", mention.value!, self.searchTerm!)
-            count = self.managedDocument?.managedObjectContext.countForFetchRequest(request, error: nil)
+            count = self.managedDocument.document?.managedObjectContext.countForFetchRequest(request, error: nil)
         }
         
         return count
