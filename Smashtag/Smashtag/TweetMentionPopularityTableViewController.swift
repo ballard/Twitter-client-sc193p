@@ -21,7 +21,7 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
     private func updateUI() {
         if let context = ManagedDocument.sharedInstance.document?.managedObjectContext where searchTerm?.characters.count > 0 {
             let request = NSFetchRequest(entityName: "Mention")
-            request.predicate = NSPredicate(format: "SUBQUERY(tweets, $tweet, any $tweet.searchTerms.value contains[c] %@).@count > 1", searchTerm!)
+            request.predicate = NSPredicate(format: "SUBQUERY(tweets, $tweet, any $tweet.searchTerms.value = %@).@count > 1", searchTerm!.lowercaseString)
             request.sortDescriptors = [
                 NSSortDescriptor(
                     key: "type",
@@ -71,7 +71,7 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
         var count: Int?
         ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait{
             let request = NSFetchRequest(entityName: "Tweet")
-            request.predicate = NSPredicate(format: "text contains[c] %@ and any searchTerms.value == %@", mention.value!, self.searchTerm!)
+            request.predicate = NSPredicate(format: "text contains[c] %@ and any searchTerms.value = %@", mention.value!, self.searchTerm!.lowercaseString)
             count = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(request, error: nil)
         }
         
@@ -94,7 +94,6 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
             } else {
                 cell.detailTextLabel?.text = ""
             }
-
         }
         // Configure the cell...
 
