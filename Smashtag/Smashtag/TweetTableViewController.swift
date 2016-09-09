@@ -107,11 +107,39 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     private func updateDatabase(newTweets: [Twitter.Tweet]) {
         ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock {
             print("block performed")
-            for twitterInfo in newTweets{
-                if let context = ManagedDocument.sharedInstance.document?.managedObjectContext {
-                    _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
+            
+            var filteredTweets : [Twitter.Tweet]
+            
+            let request = NSFetchRequest(entityName: "Tweet")
+            let responce = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(request)
+            if let tweets = responce as? [Tweet]{
+                filteredTweets = newTweets.filter {
+                    var match = true
+                    for tweet in tweets {
+                        if $0.id == tweet.unique {
+                            match = false
+                        }
+                    }
+                    return match
                 }
-            }
+                
+                print("filtered tweets: \(filteredTweets.count)")
+                
+                for twitterInfo in filteredTweets {
+                    if let context = ManagedDocument.sharedInstance.document?.managedObjectContext {
+                        _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
+                    }
+                }                
+//                for tweet in tweets {
+//                    print("tweet text \(tweet.text)")
+//                }
+            }            
+            
+//            for twitterInfo in newTweets{
+//                if let context = ManagedDocument.sharedInstance.document?.managedObjectContext {
+//                    _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
+//                }
+//            }
         }
         printDatabaseStatistics()
         print("done print database statistics")
