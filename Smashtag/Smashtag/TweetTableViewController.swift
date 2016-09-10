@@ -63,8 +63,29 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if tempHistory.count > 99 {
+        if tempHistory.count > 4 {
+            
+            print("deleting old term")
+            let request = NSFetchRequest(entityName: "SearchTerm")
+            let deletingTerm = tempHistory.first!
+            request.predicate = NSPredicate(format: "value = %@", deletingTerm)
+            
+            ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait{
+                do {
+                    if let term = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request).first! as? SearchTerm{
+                        print("term to delete: \(term)")
+                        ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(term)
+                    }
+                } catch let error{
+                    print("error: \(error)")
+                }
+            }
+            
+            printDatabaseStatistics()
+            
             tempHistory.removeFirst()
+            //place to clear database
+            
         }
         tempHistory.append(lowInput)
         history = tempHistory

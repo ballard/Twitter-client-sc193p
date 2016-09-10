@@ -38,5 +38,11 @@ class Mention: NSManagedObject {
         return nil
         
     }
+    
+    override func prepareForDeletion() {
+        super.prepareForDeletion()
+        print("deleting mention \(self.value)")
+
+    }
 
 }

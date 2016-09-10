@@ -23,6 +23,10 @@ extension Tweet {
     @NSManaged func addMentionsObject(mension: Mention)
     @NSManaged func addMentions(mensions: NSSet)
     
+    @NSManaged func removeMentionsObject(mension: Mention)
+    @NSManaged func removeMentions(mensions: NSSet)
+    
+    
     @NSManaged func addSearchTermsObject(searchTerm: SearchTerm)
     @NSManaged func addSearchTerms(searchTerms: NSSet)
 

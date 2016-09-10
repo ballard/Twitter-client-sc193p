@@ -46,5 +46,29 @@ class Tweet: NSManagedObject {
         
         return nil
     }
+    
+    override func prepareForDeletion() {
+        super.prepareForDeletion()
+        if let mentions = self.mentions {
+            for item in mentions {
+                if let mention = item as? Mention{
+                    var mentionRate = Int(mention.rate!)
+                    mentionRate -= 1
+                    mention.rate = mentionRate
+                    print("decreasing mention \(mention.value!) rate to \(mentionRate)")
+                    if mentionRate == 0 {
+                        if let mentionToDelete = Mention.mentionWithMentionInfo(mention.value!, withMentionType: mention.type!, inManagedObjectContext: self.managedObjectContext!) {
+                            self.removeMentionsObject(mentionToDelete)
+                            self.managedObjectContext!.deleteObject(mentionToDelete)
+                            print("deleting mension from tweet: \(mentionToDelete.value!)")
+                            return
+                        }
+                    }
+
+                    
+                }
+            }
+        }
+    }
 
 }
