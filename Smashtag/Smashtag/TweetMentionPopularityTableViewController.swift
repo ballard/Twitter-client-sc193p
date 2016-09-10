@@ -14,6 +14,7 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
     var searchTerm : String?
     
     override func viewDidAppear(animated: Bool) {
+        title = searchTerm
         printDatabaseStatistics()
         updateUI()
     }

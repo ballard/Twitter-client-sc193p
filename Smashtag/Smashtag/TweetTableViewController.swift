@@ -70,7 +70,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             let deletingTerm = tempHistory.first!
             request.predicate = NSPredicate(format: "value = %@", deletingTerm)
             
-            ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait{
+            ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock{
                 do {
                     if let term = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request).first! as? SearchTerm{
                         print("term to delete: \(term)")

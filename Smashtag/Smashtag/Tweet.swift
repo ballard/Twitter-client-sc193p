@@ -58,17 +58,14 @@ class Tweet: NSManagedObject {
                     print("decreasing mention \(mention.value!) rate to \(mentionRate)")
                     if mentionRate == 0 {
                         if let mentionToDelete = Mention.mentionWithMentionInfo(mention.value!, withMentionType: mention.type!, inManagedObjectContext: self.managedObjectContext!) {
-//                            self.removeMentionsObject(mentionToDelete)
-                            self.managedObjectContext!.deleteObject(mentionToDelete)
-                            print("deleting mension from tweet: \(mentionToDelete.value!)")
-                            return
+                            self.managedObjectContext?.performBlock{
+                                self.managedObjectContext!.deleteObject(mentionToDelete)
+                                print("deleting mension from tweet: \(mentionToDelete.value!)")
+                            }
                         }
                     }
-
-                    
                 }
             }
         }
     }
-
 }
