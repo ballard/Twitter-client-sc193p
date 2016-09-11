@@ -16,6 +16,7 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
                 if let frc = fetchedResultsController {
                     frc.delegate = self
                     try frc.performFetch()
+//                    print("fetched objects: \(frc.fetchedObjects)")
                 }
                 tableView.reloadData()
             } catch let error {

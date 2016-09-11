@@ -2,7 +2,7 @@
 //  Mention+CoreDataProperties.swift
 //  Smashtag
 //
-//  Created by Иван Лазарев on 07.09.16.
+//  Created by Ivan on 11.09.16.
 //  Copyright © 2016 Ivan Lazarev. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -17,6 +17,6 @@ extension Mention {
     @NSManaged var rate: NSNumber?
     @NSManaged var type: String?
     @NSManaged var value: String?
-    @NSManaged var tweets: NSSet?
+    @NSManaged var term: SearchTerm?
 
 }

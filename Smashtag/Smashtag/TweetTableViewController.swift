@@ -66,23 +66,20 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         if tempHistory.count > 4 {
             
             print("deleting old term")
-            let request = NSFetchRequest(entityName: "SearchTerm")
             let deletingTerm = tempHistory.first!
+            let request = NSFetchRequest(entityName: "SearchTerm")
             request.predicate = NSPredicate(format: "value = %@", deletingTerm)
-            
             ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait{
                 do {
-                    if let term = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request).first! as? SearchTerm{
-                        print("term to delete: \(term)")
+                    if let term = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request).first! as? SearchTerm {
+                        print("term to delete: \(term.value!)")
                         ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(term)
                     }
                 } catch let error{
                     print("error: \(error)")
                 }
             }
-            
             printDatabaseStatistics()
-            
             tempHistory.removeFirst()
             //place to clear database
             
@@ -115,6 +112,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                             weakSelf?.tweets.insert(newTweets, atIndex: 0)
                             weakSelf?.showImagesBurron.enabled = true
                             weakSelf?.updateDatabase(newTweets)
+                            print("searched text: \(weakSelf?.searchText!)")
                         }
                     }
                     weakSelf?.refreshControl?.endRefreshing()
@@ -127,34 +125,45 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     private func updateDatabase(newTweets: [Twitter.Tweet]) {
         ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock {
-            print("block performed")
             
-            var filteredTweets : [Twitter.Tweet]
+            print("search term onfo: \(self.searchText!.lowercaseString)")
             
-            let request = NSFetchRequest(entityName: "Tweet")
-            let responce = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(request)
-            if let tweets = responce as? [Tweet]{
-                filteredTweets = newTweets.filter {
-                    var match = true
-                    for tweet in tweets {
-                        if $0.id == tweet.unique {
-                            match = false
-                        }
-                    }
-                    return match
+            for tweet in newTweets{
+                for hashtag in tweet.hashtags {
+                    _ = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "Hashtags", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
                 }
                 
-                print("filtered tweets: \(filteredTweets.count)")
-                
-                for twitterInfo in filteredTweets {
-                    if let context = ManagedDocument.sharedInstance.document?.managedObjectContext {
-                        _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
-                    }
-                }                
-//                for tweet in tweets {
-//                    print("tweet text \(tweet.text)")
+                for userMention in tweet.userMentions {
+                    _ = Mention.mentionWithMentionInfo(userMention.keyword.lowercaseString, withMentionType: "User Mentions", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
+                }
+            }
+            
+//            print("block performed")
+//            var filteredTweets : [Twitter.Tweet]
+//            let request = NSFetchRequest(entityName: "Tweet")
+//            let responce = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(request)
+//            if let tweets = responce as? [Tweet]{
+//                filteredTweets = newTweets.filter {
+//                    var match = true
+//                    for tweet in tweets {
+//                        if $0.id == tweet.unique {
+//                            match = false
+//                        }
+//                    }
+//                    return match
 //                }
-            }            
+//                
+//                print("filtered tweets: \(filteredTweets.count)")
+//                
+//                for twitterInfo in filteredTweets {
+//                    if let context = ManagedDocument.sharedInstance.document?.managedObjectContext {
+//                        _ = Tweet.tweetWithTweeterInfo(twitterInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
+//                    }
+//                }                
+////                for tweet in tweets {
+////                    print("tweet text \(tweet.text)")
+////                }
+//            }            
             
 //            for twitterInfo in newTweets{
 //                if let context = ManagedDocument.sharedInstance.document?.managedObjectContext {
@@ -168,8 +177,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     private func printDatabaseStatistics(){
         ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock{
-            let tweetCount = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
-            print("\(tweetCount!) Tweets")
+//            let tweetCount = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
+//            print("\(tweetCount!) Tweets")
             let mentionsCount = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
             print("\(mentionsCount!) Mentions")
             let searchTermsCont = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)

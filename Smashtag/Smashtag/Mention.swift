@@ -8,18 +8,16 @@
 
 import Foundation
 import CoreData
-import Twitter
-
 
 class Mention: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
     
     
-    class func mentionWithMentionInfo(mentionInfo: String, withMentionType mentionType: String, inManagedObjectContext context: NSManagedObjectContext) -> Mention? {
+    class func mentionWithMentionInfo(mentionInfo: String, withMentionType mentionType: String, forSearchTermInfo searchTermInfo: String, inManagedObjectContext context: NSManagedObjectContext) -> Mention? {
         
         let request = NSFetchRequest(entityName: "Mention")
-        request.predicate = NSPredicate(format: "value = %@", mentionInfo)
+        request.predicate = NSPredicate(format: "value = %@ and term.value = %@", mentionInfo, searchTermInfo)
         
         if let mention = (try? context.executeFetchRequest(request))?.first as? Mention {
             var mentionRate = Int(mention.rate!)
@@ -31,6 +29,10 @@ class Mention: NSManagedObject {
                 mention.value = mentionInfo
                 mention.type = mentionType
                 mention.rate = 1
+//                print("searh term info: \(searchTermInfo)")
+                let searchTerm = SearchTerm.searchTermWithSearchTermInfo(searchTermInfo, inManagedObjectContext: context)
+                mention.term = searchTerm
+//                print("recorded mention: \(mention)")
                 return mention
             }
         }
@@ -42,7 +44,5 @@ class Mention: NSManagedObject {
     override func prepareForDeletion() {
         super.prepareForDeletion()
         print("deleting mention \(self.value!)")
-
     }
-
 }
