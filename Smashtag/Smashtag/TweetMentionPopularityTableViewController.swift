@@ -24,9 +24,6 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
             print("search term for table: \(searchTerm!.lowercaseString)")
             let request = NSFetchRequest(entityName: "Mention")
             request.predicate = NSPredicate(format: "term.value = %@ and rate > 1", searchTerm!.lowercaseString)
-            
-            
-//            request.predicate = NSPredicate(format: "SUBQUERY(tweets, $tweet, any $tweet.searchTerms.value = %@).@count > 1", searchTerm!.lowercaseString)
             request.sortDescriptors = [
                 NSSortDescriptor(
                     key: "type",
@@ -53,35 +50,12 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
     
     private func printDatabaseStatistics() {
         ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock{
-//            let tweetCount = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
-//            print("\(tweetCount!) Tweets")
             let mentionsCount = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
             print("\(mentionsCount!) Mentions")
-            
-//            if let results = try? self.managedDocument?.managedObjectContext.executeFetchRequest(NSFetchRequest(entityName: "Mention")) {
-//                for result in results! {
-//                    if let mention = result as? Mention{
-//                        print("mention value: \(mention.value!)")
-//                    }
-//                }
-//                print("\(results!.count) TwitterUsers")
-//            }
-            
             let searchTermsCont = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
             print("\(searchTermsCont!) SearchTerms")
         }
-    }    
-    
-//    private func mentionCountInTweets(mention: Mention) -> Int?{
-//        var count: Int?
-//        ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait{
-//            let request = NSFetchRequest(entityName: "Tweet")
-//            request.predicate = NSPredicate(format: "text contains[c] %@ and any searchTerms.value = %@", mention.value!, self.searchTerm!.lowercaseString)
-//            count = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(request, error: nil)
-//        }
-//        
-//        return count
-//    }
+    }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Mention Rating", forIndexPath: indexPath)
@@ -97,13 +71,6 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
             }
             cell.textLabel?.text = mentionValue
             cell.detailTextLabel?.text = "\(mentionRate!)"
-            
-            
-//            if let count = mentionCountInTweets(mention) {
-//                cell.detailTextLabel?.text = (count == 1) ? "Mentioned 1 time" : ("Mentioned \(count) times")
-//            } else {
-//                cell.detailTextLabel?.text = ""
-//            }
         }
         // Configure the cell...
 
