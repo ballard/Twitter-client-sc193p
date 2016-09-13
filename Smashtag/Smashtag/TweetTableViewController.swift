@@ -118,6 +118,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                             weakSelf?.showImagesBurron.enabled = true
                             weakSelf?.updateDatabase(newTweets)
                             print("searched text: \(weakSelf?.searchText!)")
+                            print("new tweets count: \(newTweets.count)")
                         }
                     }
                     weakSelf?.refreshControl?.endRefreshing()
@@ -144,13 +145,25 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
 //                }
 //            }
             
+//            print("new tweets: \(newTweets.count)")
+            
             let hashtags = newTweets.flatMap { $0.hashtags.map { $0.keyword.lowercaseString } }
             let userMentions = newTweets.flatMap{ $0.userMentions.map { $0.keyword.lowercaseString } }
-            let mentions = hashtags + userMentions            
-            print("mentions: \(mentions)")
+            let mentions = hashtags + userMentions
             
-            _ = Mention.mentionsWithMensionsInfo(mentions, forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
-
+            var mentionsDict : [String : Int] = [:]
+            
+            for mention in mentions {
+                if let oldCount = mentionsDict[mention] {
+                    mentionsDict[mention] = oldCount + 1
+                } else {
+                    mentionsDict[mention] = 1
+                }
+            }
+            
+            print("mentionsDict: \(mentionsDict)")
+            
+//            Mention.mentionsWithMensionsInfo(mentionsDict, forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
             
             print("search term info: \(self.searchText!.lowercaseString)")
             
@@ -158,11 +171,11 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             
             for tweet in newTweets{
                 for hashtag in tweet.hashtags {
-                    _ = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "Hashtags", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
+                    _ = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "Hashtags", forSearchTermInfo: self.searchText!.lowercaseString, forTweetInfo: tweet.id.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
                 }
                 
                 for userMention in tweet.userMentions {
-                    _ = Mention.mentionWithMentionInfo(userMention.keyword.lowercaseString, withMentionType: "User Mentions", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
+                    _ = Mention.mentionWithMentionInfo(userMention.keyword.lowercaseString, withMentionType: "User Mentions", forSearchTermInfo: self.searchText!.lowercaseString, forTweetInfo: tweet.id.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
                 }
             }
         }

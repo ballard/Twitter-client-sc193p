@@ -1,5 +1,5 @@
 //
-//  SearchTerm+CoreDataProperties.swift
+//  Tweet+CoreDataProperties.swift
 //  Smashtag
 //
 //  Created by Ivan on 13.09.16.
@@ -12,9 +12,9 @@
 import Foundation
 import CoreData
 
-extension SearchTerm {
+extension Tweet {
 
-    @NSManaged var value: String?
-    @NSManaged var mensions: NSSet?
+    @NSManaged var unique: String?
+    @NSManaged var mention: Mention?
 
 }
