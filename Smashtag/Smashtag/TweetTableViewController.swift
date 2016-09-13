@@ -10,6 +10,12 @@ import UIKit
 import Twitter
 import CoreData
 
+
+struct MentionInfo {
+    var value : String
+    var type : String
+}
+
 class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     // Model
@@ -121,21 +127,44 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             self.refreshControl?.endRefreshing()
         }
     }
+
     
     private func updateDatabase(newTweets: [Twitter.Tweet]) {
         ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock {
             
-            print("search term onfo: \(self.searchText!.lowercaseString)")
+//            let hashtags = newTweets.flatMap {
+//                $0.hashtags.map {
+//                    MentionInfo(value: $0.keyword, type: "Hashtag")
+//                }
+//            }
+//            
+//            let userMentons = newTweets.flatMap{
+//                $0.userMentions.map {
+//                    MentionInfo(value: $0.keyword, type: "User Mention")
+//                }
+//            }
             
-            for tweet in newTweets{
-                for hashtag in tweet.hashtags {
-                    _ = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "Hashtags", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
-                }
-                
-                for userMention in tweet.userMentions {
-                    _ = Mention.mentionWithMentionInfo(userMention.keyword.lowercaseString, withMentionType: "User Mentions", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
-                }
-            }
+            let hashtags = newTweets.flatMap { $0.hashtags.map { $0.keyword.lowercaseString } }
+            let userMentions = newTweets.flatMap{ $0.userMentions.map { $0.keyword.lowercaseString } }
+            let mentions = hashtags + userMentions            
+            print("mentions: \(mentions)")
+            
+            _ = Mention.mentionsWithMensionsInfo(mentions, forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
+
+            
+            print("search term info: \(self.searchText!.lowercaseString)")
+            
+            
+            
+//            for tweet in newTweets{
+//                for hashtag in tweet.hashtags {
+//                    _ = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "Hashtags", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
+//                }
+//                
+//                for userMention in tweet.userMentions {
+//                    _ = Mention.mentionWithMentionInfo(userMention.keyword.lowercaseString, withMentionType: "User Mentions", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
+//                }
+//            }
         }
         printDatabaseStatistics()
         print("done print database statistics")
