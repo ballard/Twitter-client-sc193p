@@ -189,6 +189,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             print("\(mentionsCount!) Mentions")
             let searchTermsCont = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
             print("\(searchTermsCont!) SearchTerms")
+            let tweetsCount = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
+            print("\(tweetsCount!) tweetsCount")
         }
     }
     

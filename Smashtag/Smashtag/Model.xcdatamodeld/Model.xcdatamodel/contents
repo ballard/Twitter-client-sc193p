@@ -4,8 +4,8 @@
         <attribute name="rate" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="term" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SearchTerm" inverseName="mensions" inverseEntity="SearchTerm" syncable="YES"/>
-        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="mention" inverseEntity="Tweet" syncable="YES"/>
+        <relationship name="term" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SearchTerm" inverseName="mensions" inverseEntity="SearchTerm" syncable="YES"/>
+        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Tweet" inverseName="mention" inverseEntity="Tweet" syncable="YES"/>
     </entity>
     <entity name="SearchTerm" representedClassName=".SearchTerm" syncable="YES">
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
