@@ -156,15 +156,15 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             
             
             
-//            for tweet in newTweets{
-//                for hashtag in tweet.hashtags {
-//                    _ = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "Hashtags", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
-//                }
-//                
-//                for userMention in tweet.userMentions {
-//                    _ = Mention.mentionWithMentionInfo(userMention.keyword.lowercaseString, withMentionType: "User Mentions", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
-//                }
-//            }
+            for tweet in newTweets{
+                for hashtag in tweet.hashtags {
+                    _ = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "Hashtags", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
+                }
+                
+                for userMention in tweet.userMentions {
+                    _ = Mention.mentionWithMentionInfo(userMention.keyword.lowercaseString, withMentionType: "User Mentions", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
+                }
+            }
         }
         printDatabaseStatistics()
         print("done print database statistics")

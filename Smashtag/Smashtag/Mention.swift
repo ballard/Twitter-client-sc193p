@@ -17,11 +17,13 @@ class Mention: NSManagedObject {
         let request = NSFetchRequest(entityName: "Mention")
         request.predicate = NSPredicate(format: "value in %@ and term.value = %@", mentionsInfo, searchTermInfo)
         
-        if let mentions = (try? context.executeFetchRequest(request)) {
+        if let mentions = (try? context.executeFetchRequest(request)) as? [Mention] {
             for mention in mentions {
-                if let storedMention = mention as? Mention {
-                    print("fetched mention value: \(storedMention.value!)")
-                }
+                
+                
+                
+                
+                print("fetched mention value: \(mention.value!)")                
             }
             print("fetched mensions count: \(mentions.count)")
         }
