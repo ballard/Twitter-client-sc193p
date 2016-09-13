@@ -17,22 +17,16 @@ class Mention: NSManagedObject {
     class func mentionWithMentionInfo(mentionInfo: String, withMentionType mentionType: String, forSearchTermInfo searchTermInfo: String, inManagedObjectContext context: NSManagedObjectContext) -> Mention? {
         
         let request = NSFetchRequest(entityName: "Mention")
-        request.predicate = NSPredicate(format: "value = %@ and term.value = %@", mentionInfo, searchTermInfo)
+        request.predicate = NSPredicate(format: "value = %@", mentionInfo)
         
         if let mention = (try? context.executeFetchRequest(request))?.first as? Mention {
-            var mentionRate = Int(mention.rate!)
-            mentionRate += 1
-            mention.rate! = mentionRate
             return mention
         } else {
-            if let mention = NSEntityDescription.insertNewObjectForEntityForName("Mention", inManagedObjectContext: context) as? Mention{
+            if let mention = NSEntityDescription.insertNewObjectForEntityForName("Mention", inManagedObjectContext: context) as? Mention {
                 mention.value = mentionInfo
                 mention.type = mentionType
-                mention.rate = 1
-//                print("searh term info: \(searchTermInfo)")
-                let searchTerm = SearchTerm.searchTermWithSearchTermInfo(searchTermInfo, inManagedObjectContext: context)
-                mention.term = searchTerm
-//                print("recorded mention: \(mention)")
+                let searchTerm = SearchTerm.searchTermWithSearchTermInfo(searchTermInfo, forMension: mention.value!, inManagedObjectContext: context)
+                mention.addTermsObject(searchTerm!)
                 return mention
             }
         }

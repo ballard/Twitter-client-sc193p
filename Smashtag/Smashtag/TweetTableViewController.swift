@@ -123,10 +123,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     private func updateDatabase(newTweets: [Twitter.Tweet]) {
-        ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock {
-            
-            print("search term onfo: \(self.searchText!.lowercaseString)")
-            
+        ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock {            
             for tweet in newTweets{
                 for hashtag in tweet.hashtags {
                     _ = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "Hashtags", forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
