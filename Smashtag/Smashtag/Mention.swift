@@ -97,37 +97,6 @@ class Mention: NSManagedObject {
         }
     }
     
-    
-    class func mentionWithMentionInfo(mentionInfo: String, withMentionType mentionType: String, forSearchTermInfo searchTermInfo: String, forTweetInfo tweetInfo: String, inManagedObjectContext context: NSManagedObjectContext) -> Mention? {
-        let request = NSFetchRequest(entityName: "Mention")
-        request.predicate = NSPredicate(format: "value = %@ and term.value = %@", mentionInfo, searchTermInfo)
-        
-        if let mention = (try? context.executeFetchRequest(request))?.first as? Mention {
-            let registedTweets = mention.tweets!.allObjects as! [Tweet]
-            let uniques = registedTweets.map{$0.unique!}
-            if uniques.contains(tweetInfo) == false {
-                mention.rate! = Int(mention.rate!) + 1
-                let tweet = Tweet.tweetWithTweetInfo(tweetInfo, forMention: mention, inManagedObjectContext: context)
-                mention.addTweetsObject(tweet!)
-                return mention
-            }
-        } else {
-            if let mention = NSEntityDescription.insertNewObjectForEntityForName("Mention", inManagedObjectContext: context) as? Mention {
-                mention.value = mentionInfo
-                mention.type = mentionType
-                mention.rate = 1
-                let searchTerm = SearchTerm.searchTermWithSearchTermInfo(searchTermInfo, inManagedObjectContext: context)
-                mention.term = searchTerm
-                let tweet = Tweet.tweetWithTweetInfo(tweetInfo, forMention: mention, inManagedObjectContext: context)
-                mention.addTweetsObject(tweet!)
-                return mention
-            }
-        }
-        
-        return nil
-        
-    }
-    
     override func prepareForDeletion() {
         super.prepareForDeletion()
         print("deleting mention \(self.value!)")
