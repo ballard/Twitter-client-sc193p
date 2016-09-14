@@ -69,7 +69,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if tempHistory.count > 1 {
+        if tempHistory.count > 4 {
             print("deleting old term")
             let deletingTerm = tempHistory.first!
             var request = NSFetchRequest(entityName: "SearchTerm")
@@ -90,9 +90,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait {
                 do {
                     if let tweetsToDelete = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request) as? [Tweet] {
-                        print("gotcha: \(tweetsToDelete.count)")
                         for tweetToDelete in tweetsToDelete {
-                            print("tweetToDelete: \(tweetToDelete.mentions?.count)")
                             ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(tweetToDelete)
                         }
                     }
@@ -178,13 +176,11 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                 }
             }
             
-            print("mentionsDict: \(mentionsDict)")
+//            print("mentionsDict: \(mentionsDict)")
             
-//            Mention.mentionsWithMensionsInfo(mentionsDict, forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
+            Mention.mentionsWithTweetsInfo(newTweets, forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
             
             print("search term info: \(self.searchText!.lowercaseString)")
-            
-            
             
             for tweet in newTweets{
                 for hashtag in tweet.hashtags {
