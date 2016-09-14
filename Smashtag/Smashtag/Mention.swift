@@ -63,7 +63,7 @@ class Mention: NSManagedObject {
             if uniques.contains(tweetInfo) == false {
                 print("append")
                 mention.rate! = Int(mention.rate!) + 1
-                let tweet = Tweet.tweetWithTweetInfo(tweetInfo, forMention: mentionInfo, inManagedObjectContext: context)
+                let tweet = Tweet.tweetWithTweetInfo(tweetInfo, forMention: mention, inManagedObjectContext: context)
                 mention.addTweetsObject(tweet!)
                 return mention
             }
@@ -74,7 +74,7 @@ class Mention: NSManagedObject {
                 mention.rate = 1
                 let searchTerm = SearchTerm.searchTermWithSearchTermInfo(searchTermInfo, inManagedObjectContext: context)
                 mention.term = searchTerm
-                let tweet = Tweet.tweetWithTweetInfo(tweetInfo, forMention: mentionInfo, inManagedObjectContext: context)
+                let tweet = Tweet.tweetWithTweetInfo(tweetInfo, forMention: mention, inManagedObjectContext: context)
                 mention.addTweetsObject(tweet!)
                 return mention
             }

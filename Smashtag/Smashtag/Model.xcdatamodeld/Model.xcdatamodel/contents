@@ -5,7 +5,7 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="term" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SearchTerm" inverseName="mensions" inverseEntity="SearchTerm" syncable="YES"/>
-        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Tweet" inverseName="mention" inverseEntity="Tweet" syncable="YES"/>
+        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="mentions" inverseEntity="Tweet" syncable="YES"/>
     </entity>
     <entity name="SearchTerm" representedClassName=".SearchTerm" syncable="YES">
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
@@ -13,7 +13,7 @@
     </entity>
     <entity name="Tweet" representedClassName=".Tweet" syncable="YES">
         <attribute name="unique" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="mention" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Mention" inverseName="tweets" inverseEntity="Mention" syncable="YES"/>
+        <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mention" inverseName="tweets" inverseEntity="Mention" syncable="YES"/>
     </entity>
     <elements>
         <element name="Mention" positionX="-14679" positionY="-1908" width="128" height="118"/>

@@ -69,21 +69,38 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if tempHistory.count > 4 {
+        if tempHistory.count > 1 {
             print("deleting old term")
             let deletingTerm = tempHistory.first!
-            let request = NSFetchRequest(entityName: "SearchTerm")
+            var request = NSFetchRequest(entityName: "SearchTerm")
             request.predicate = NSPredicate(format: "value = %@", deletingTerm)
-            ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait{
+            ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait {
                 do {
                     if let term = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request).first! as? SearchTerm {
                         print("term to delete: \(term.value!)")
                         ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(term)
                     }
-                } catch let error{
+                } catch let error {
                     print("error: \(error)")
                 }
             }
+            
+            request = NSFetchRequest(entityName: "Tweet")
+            request.predicate = NSPredicate(format: "mentions.@count == 0")
+            ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait {
+                do {
+                    if let tweetsToDelete = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request) as? [Tweet] {
+                        print("gotcha: \(tweetsToDelete.count)")
+                        for tweetToDelete in tweetsToDelete {
+                            print("tweetToDelete: \(tweetToDelete.mentions?.count)")
+                            ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(tweetToDelete)
+                        }
+                    }
+                } catch let error {
+                    print("error: \(error)")
+                }
+            }
+            
             printDatabaseStatistics()
             tempHistory.removeFirst()
             //place to clear database
