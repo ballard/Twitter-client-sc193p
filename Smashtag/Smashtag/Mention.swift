@@ -35,83 +35,66 @@ class Mention: NSManagedObject {
         
         if let fetchedMentions = (try? context.executeFetchRequest(request)) as? [Mention] {
             
-//            let fetchedMentionsValues = fetchedMentions.map{$0.value!}
-            
             let existingMentionsStruct = mentions.filter{fetchedMentions.map{$0.value!}.contains($0.value)}
             let newMentionsStruct = mentions.filter{!existingMentionsStruct.map{$0.value}.contains($0.value)}
             
-            
-            
-            
-//            let existingMentions = mentionsValues.filter{fetchedMentions.map{$0.value!}.contains($0)}
-//            let newMentions = mentionsValues.filter{!existingMentions.contains($0)}
-            
-//            for fetchedMention in fetchedMentions {
-//                let registedTweets = fetchedMention.tweets!.allObjects as! [Tweet]
-//                let uniques = registedTweets.map{$0.unique!}
-//                
-//                for existingMention in existingMentionsStruct {
-//                    if !uniques.contains(existingMention.tweetId) {
-//                        fetchedMention.rate! = Int(fetchedMention.rate!) + 1
-//                        let tweet = Tweet.tweetWithTweetInfo(existingMention.tweetId, forMention: fetchedMention, inManagedObjectContext: context)
-//                        fetchedMention.addTweetsObject(tweet!)
-//                    }
-//                    
-//                }
-//            }
-//            
-//            for newMention in newMentionsStruct {
-//                if let mention = NSEntityDescription.insertNewObjectForEntityForName("Mention", inManagedObjectContext: context) as? Mention {
-//                    mention.value = newMention.value
-//                    mention.type = newMention.value.characters.first == "#" ? "Hastags" : "User Mentions"
-//                    mention.rate = 1
-//                    let searchTerm = SearchTerm.searchTermWithSearchTermInfo(searchTermInfo, inManagedObjectContext: context)
-//                    mention.term = searchTerm
-//                    let tweet = Tweet.tweetWithTweetInfo(newMention.tweetId, forMention: mention, inManagedObjectContext: context)
-//                    mention.addTweetsObject(tweet!)
-//                }
-//            }
-            
-            for existingMention in existingMentionsStruct{
-                print("existing mention value: \(existingMention.value)")
+            var existingMentionsDict : [String : [String]] = [:]
+            for newmention in existingMentionsStruct {
+                if let oldCount = existingMentionsDict[newmention.value] {
+                    existingMentionsDict[newmention.value] = oldCount + [newmention.tweetId]
+                } else {
+                    existingMentionsDict[newmention.value] = [newmention.tweetId]
+                }
             }
-            for newMention in newMentionsStruct{
-                print("new mention value: \(newMention.value)")
+            
+            var newMentionsDict : [String : [String]] = [:]
+            for newmention in newMentionsStruct {
+                if let oldCount = newMentionsDict[newmention.value] {
+                    newMentionsDict[newmention.value] = oldCount + [newmention.tweetId]
+                } else {
+                    newMentionsDict[newmention.value] = [newmention.tweetId]
+                }
             }
+            
+            print("existing mentions dictionary: \(existingMentionsDict)")
+            
+            for existingMention in newMentionsDict {
+                for fetchedMention in fetchedMentions{
+                    let registedTweets = fetchedMention.tweets!.allObjects as! [Tweet]
+                    let uniques = registedTweets.map{$0.unique!}
+                    for tweetId in existingMention.1 {
+                        if !uniques.contains(tweetId) {
+                            fetchedMention.rate! = Int(fetchedMention.rate!) + 1
+                            let tweet = Tweet.tweetWithTweetInfo(tweetId, forMention: fetchedMention, inManagedObjectContext: context)
+                            fetchedMention.addTweetsObject(tweet!)
+                        }
+                    }
+                }
+            }
+            
+            for newMention in newMentionsDict {
+                if let mention = NSEntityDescription.insertNewObjectForEntityForName("Mention", inManagedObjectContext: context) as? Mention {
+                    mention.value = newMention.0
+                    mention.type = newMention.0.characters.first! == "#" ? "Hastags" : "User Mentions"
+                    mention.rate = newMention.1.count
+                    let searchTerm = SearchTerm.searchTermWithSearchTermInfo(searchTermInfo, inManagedObjectContext: context)
+                    mention.term = searchTerm
+                    for tweetId in newMention.1{
+                        let tweet = Tweet.tweetWithTweetInfo(tweetId, forMention: mention, inManagedObjectContext: context)
+                        mention.addTweetsObject(tweet!)
+                    }
+                }
+            }
+            
+//            for existingMention in existingMentionsStruct{
+//                print("existing mention value: \(existingMention.value)")
+//            }
+//            for newMention in newMentionsStruct{
+//                print("new mention value: \(newMention.value)")
+//            }
             print("existingMentions count: \(existingMentionsStruct.count), new mentions count: \(newMentionsStruct.count)")
             
         }
-        
-        
-        
-        
-//        if let mentions = (try? context.executeFetchRequest(request)) as? [Mention] {
-//            let existingMentions = mentionInfoValues.filter{ mentions.map{ $0.value! }.contains($0) }
-//            print("existingMentions count: \(mentions.count)")
-//            
-//            for mention in mentions {
-//                for existingMention in existingMentions {
-//                    if mention.value == existingMention {
-//                        mention.rate = Int(mention.rate!) + mentionsInfo[mention.value!]!
-//                    }
-//                }
-//            }
-//
-//            let newMentions = mentionInfoValues.filter { !existingMentions.contains($0) }
-//            print("newMentions count: \(newMentions.count)")
-//            
-//            for newMention in newMentions {
-//                if let mention = NSEntityDescription.insertNewObjectForEntityForName("Mention", inManagedObjectContext: context) as? Mention {
-//                    mention.value = newMention
-//                    mention.type = newMention.characters.first! == "#" ? "Hashtags" : "User Mentions"
-//                    mention.rate = mentionsInfo[mention.value!]!
-//                    let searchTerm = SearchTerm.searchTermWithSearchTermInfo(searchTermInfo, inManagedObjectContext: context)
-//                    mention.term = searchTerm
-//                }
-//            }
-
-//            print("fetched mensions count: \(mentionsInfo.count)")
-        
     }
     
     
