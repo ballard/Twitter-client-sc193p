@@ -10,13 +10,13 @@ import Foundation
 import CoreData
 import Twitter
 
-struct MentionPayload {
-    var value : String
-    var tweetId : String // todo unique mention values with tweet id array
-}
-
 class Mention: NSManagedObject {
-
+    
+    struct MentionPayload {
+        var value : String
+        var tweetId : String // todo unique mention values with tweet id array
+    }
+    
 // Insert code here to add functionality to your managed object subclass
     
     class func mentionsWithTweetsInfo(tweetsInfo: [Twitter.Tweet], forSearchTermInfo searchTermInfo: String, inManagedObjectContext context: NSManagedObjectContext) {
@@ -35,38 +35,23 @@ class Mention: NSManagedObject {
         
         if let fetchedMentions = (try? context.executeFetchRequest(request)) as? [Mention] {
             
-            let existingMentionsStruct = mentions.filter{fetchedMentions.map{$0.value!}.contains($0.value)}
-            let newMentionsStruct = mentions.filter{!existingMentionsStruct.map{$0.value}.contains($0.value)}
+            let existingMentions = mentions.filter{fetchedMentions.map{$0.value!}.contains($0.value)}
+            let newMentions = mentions.filter{!existingMentions.map{$0.value}.contains($0.value)}
+   
+            let existingMentionsDict = Mention.fillMentionsDictWithMentionPayload(existingMentions)
+            let newMentionsDict = Mention.fillMentionsDictWithMentionPayload(newMentions)
             
-            var existingMentionsDict : [String : [String]] = [:]
-            for newmention in existingMentionsStruct {
-                if let oldCount = existingMentionsDict[newmention.value] {
-                    existingMentionsDict[newmention.value] = oldCount + [newmention.tweetId]
-                } else {
-                    existingMentionsDict[newmention.value] = [newmention.tweetId]
-                }
-            }
-            
-            var newMentionsDict : [String : [String]] = [:]
-            for newmention in newMentionsStruct {
-                if let oldCount = newMentionsDict[newmention.value] {
-                    newMentionsDict[newmention.value] = oldCount + [newmention.tweetId]
-                } else {
-                    newMentionsDict[newmention.value] = [newmention.tweetId]
-                }
-            }
-            
-            print("existing mentions dictionary: \(existingMentionsDict)")
-            
-            for existingMention in newMentionsDict {
+            for existingMention in existingMentionsDict {
                 for fetchedMention in fetchedMentions{
-                    let registedTweets = fetchedMention.tweets!.allObjects as! [Tweet]
-                    let uniques = registedTweets.map{$0.unique!}
-                    for tweetId in existingMention.1 {
-                        if !uniques.contains(tweetId) {
-                            fetchedMention.rate! = Int(fetchedMention.rate!) + 1
-                            let tweet = Tweet.tweetWithTweetInfo(tweetId, forMention: fetchedMention, inManagedObjectContext: context)
-                            fetchedMention.addTweetsObject(tweet!)
+                    if fetchedMention.value == existingMention.0 {
+                        let registedTweets = fetchedMention.tweets!.allObjects as! [Tweet]
+                        let uniques = registedTweets.map{$0.unique!}
+                        for tweetId in existingMention.1 {
+                            if !uniques.contains(tweetId) {
+                                fetchedMention.rate! = Int(fetchedMention.rate!) + 1
+                                let tweet = Tweet.tweetWithTweetInfo(tweetId, forMention: fetchedMention, inManagedObjectContext: context)
+                                fetchedMention.addTweetsObject(tweet!)
+                            }
                         }
                     }
                 }
@@ -92,7 +77,7 @@ class Mention: NSManagedObject {
 //            for newMention in newMentionsStruct{
 //                print("new mention value: \(newMention.value)")
 //            }
-            print("existingMentions count: \(existingMentionsStruct.count), new mentions count: \(newMentionsStruct.count)")
+            print("existingMentions count: \(existingMentions.count), new mentions count: \(newMentions.count)")
             
         }
     }

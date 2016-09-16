@@ -23,5 +23,17 @@ extension Mention {
     
     @NSManaged func addTweetsObject(tweet: Tweet)
     @NSManaged func addTweets(tweets: NSSet)
+    
+    class func fillMentionsDictWithMentionPayload(payload: [MentionPayload]) -> [String : [String]] {
+        var mentionsDict : [String : [String]] = [:]
+        for mention in payload {
+            if let oldCount = mentionsDict[mention.value] {
+                mentionsDict[mention.value] = oldCount + [mention.tweetId]
+            } else {
+                mentionsDict[mention.value] = [mention.tweetId]
+            }
+        }
+        return mentionsDict
+    }
 
 }
