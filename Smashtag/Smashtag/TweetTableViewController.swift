@@ -159,12 +159,16 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     private func printDatabaseStatistics(){
         ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock{
-            let mentionsCount = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"), error: nil)
-            print("\(mentionsCount!) Mentions")
-            let searchTermsCont = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"), error: nil)
-            print("\(searchTermsCont!) SearchTerms")
-            let tweetsCount = ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"), error: nil)
-            print("\(tweetsCount!) tweetsCount")
+            do{
+                let mentionsCount = try ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Mention"))
+                print("\(mentionsCount!) Mentions")
+                let searchTermsCont = try ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "SearchTerm"))
+                print("\(searchTermsCont!) SearchTerms")
+                let tweetsCount = try ManagedDocument.sharedInstance.document?.managedObjectContext.countForFetchRequest(NSFetchRequest(entityName: "Tweet"))
+                print("\(tweetsCount!) tweetsCount")
+            } catch let error {
+                print("error: \(error)")
+            }
         }
     }
     

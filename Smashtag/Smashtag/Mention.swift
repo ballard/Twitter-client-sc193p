@@ -28,7 +28,7 @@ class Mention: NSManagedObject {
             Tweet.userMentions.map{ MentionPayload(value: $0.keyword.lowercaseString, tweetId: Tweet.id) }
         }
         let mentions = hashtags + userMentions
-        let mentionsValues = mentions.map {$0.value}
+        let mentionsValues = (hashtags + userMentions).map {$0.value}
         
         let request = NSFetchRequest(entityName: "Mention")
         request.predicate = NSPredicate(format: "value in %@ and term.value = %@", mentionsValues, searchTermInfo)

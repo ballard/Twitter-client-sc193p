@@ -18,8 +18,7 @@ extension Mention {
     @NSManaged var type: String?
     @NSManaged var value: String?
     @NSManaged var term: SearchTerm?
-    @NSManaged var tweets: NSSet?
-    
+    @NSManaged var tweets: NSSet?    
     
     @NSManaged func addTweetsObject(tweet: Tweet)
     @NSManaged func addTweets(tweets: NSSet)

@@ -109,6 +109,7 @@
 					DAB79D141BD20B7900448104 = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = 9LU8U6NNWA;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -263,6 +264,7 @@
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -283,6 +285,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
