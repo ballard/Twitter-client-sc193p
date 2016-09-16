@@ -37,11 +37,8 @@ class Mention: NSManagedObject {
             
             let existingMentions = mentions.filter{fetchedMentions.map{$0.value!}.contains($0.value)}
             let newMentions = mentions.filter{!existingMentions.map{$0.value}.contains($0.value)}
-   
-            let existingMentionsDict = Mention.fillMentionsDictWithMentionPayload(existingMentions)
-            let newMentionsDict = Mention.fillMentionsDictWithMentionPayload(newMentions)
             
-            for existingMention in existingMentionsDict {
+            for existingMention in Mention.fillMentionsDictWithMentionPayload(existingMentions) {
                 for fetchedMention in fetchedMentions{
                     if fetchedMention.value == existingMention.0 {
                         let registedTweets = fetchedMention.tweets!.allObjects as! [Tweet]
@@ -57,7 +54,7 @@ class Mention: NSManagedObject {
                 }
             }
             
-            for newMention in newMentionsDict {
+            for newMention in Mention.fillMentionsDictWithMentionPayload(newMentions) {
                 if let mention = NSEntityDescription.insertNewObjectForEntityForName("Mention", inManagedObjectContext: context) as? Mention {
                     mention.value = newMention.0
                     mention.type = newMention.0.characters.first! == "#" ? "Hastags" : "User Mentions"
