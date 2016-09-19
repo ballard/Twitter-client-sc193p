@@ -2,11 +2,8 @@
 //  SearchTerm+CoreDataProperties.swift
 //  Smashtag
 //
-//  Created by Ivan on 14.09.16.
+//  Created by Ivan on 19.09.16.
 //  Copyright © 2016 Ivan Lazarev. All rights reserved.
-//
-//  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
-//  to delete and recreate this implementation file for your updated model.
 //
 
 import Foundation
@@ -16,5 +13,17 @@ extension SearchTerm {
 
     @NSManaged var value: String?
     @NSManaged var mensions: NSSet?
+
+    @objc(addMensionsObject:)
+    @NSManaged func addToMensions(value: Mention)
+
+    @objc(removeMensionsObject:)
+    @NSManaged func removeFromMensions(value: Mention)
+
+    @objc(addMensions:)
+    @NSManaged func addToMensions(values: NSSet)
+
+    @objc(removeMensions:)
+    @NSManaged func removeFromMensions(values: NSSet)
 
 }

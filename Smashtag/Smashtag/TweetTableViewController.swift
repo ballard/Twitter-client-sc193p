@@ -71,35 +71,35 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         
         if tempHistory.count > 4 {
             print("deleting old term")
-            let deletingTerm = tempHistory.first!
-            var request = NSFetchRequest(entityName: "SearchTerm")
-            request.predicate = NSPredicate(format: "value = %@", deletingTerm)
-            ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait {
-                do {
-                    if let term = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request).first! as? SearchTerm {
-                        print("term to delete: \(term.value!)")
-                        ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(term)
-                    }
-                } catch let error {
-                    print("error: \(error)")
-                }
-            }
+//            let deletingTerm = tempHistory.first!
+//            var request = NSFetchRequest(entityName: "SearchTerm")
+//            request.predicate = NSPredicate(format: "value = %@", deletingTerm)
+//            ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait {
+//                do {
+//                    if let term = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request).first! as? SearchTerm {
+//                        print("term to delete: \(term.value!)")
+//                        ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(term)
+//                    }
+//                } catch let error {
+//                    print("error: \(error)")
+//                }
+//            }
+//            
+//            request = NSFetchRequest(entityName: "Tweet")
+//            request.predicate = NSPredicate(format: "mentions.@count == 0")
+//            ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait {
+//                do {
+//                    if let tweetsToDelete = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request) as? [Tweet] {
+//                        for tweetToDelete in tweetsToDelete {
+//                            ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(tweetToDelete)
+//                        }
+//                    }
+//                } catch let error {
+//                    print("error: \(error)")
+//                }
+//            }
             
-            request = NSFetchRequest(entityName: "Tweet")
-            request.predicate = NSPredicate(format: "mentions.@count == 0")
-            ManagedDocument.sharedInstance.document?.managedObjectContext.performBlockAndWait {
-                do {
-                    if let tweetsToDelete = try ManagedDocument.sharedInstance.document!.managedObjectContext.executeFetchRequest(request) as? [Tweet] {
-                        for tweetToDelete in tweetsToDelete {
-                            ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(tweetToDelete)
-                        }
-                    }
-                } catch let error {
-                    print("error: \(error)")
-                }
-            }
-            
-            printDatabaseStatistics()
+//            printDatabaseStatistics()
             tempHistory.removeFirst()
             //place to clear database
             
@@ -148,7 +148,51 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     private func updateDatabase(newTweets: [Twitter.Tweet]) {
         ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock {
             
-            Mention.mentionsWithTweetsInfo(newTweets, forSearchTermInfo: self.searchText!.lowercaseString, inManagedObjectContext: ManagedDocument.sharedInstance.document!.managedObjectContext)
+            
+            let clearRequest = NSFetchRequest(entityName: "Tweet")
+            
+            let date = NSDate.init(timeIntervalSinceNow: -2*1000)
+            
+
+            clearRequest.predicate = NSPredicate(format: "created > %@", date)
+//            clearRequest.sortDescriptors = [
+//                NSSortDescriptor(
+//                    key: "created",
+//                    ascending: false,
+//                    selector: nil)]
+            let timedOutTweets = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(clearRequest)
+            if let tweets = timedOutTweets as? [Tweet] {
+                for tweet in tweets {
+                    print("timed out tweets: \(tweet.unique!), created: \(tweet.created!)")
+                }
+            }
+            
+            
+            
+            
+            var filteredTweets : [Twitter.Tweet]
+            
+            let request = NSFetchRequest(entityName: "Tweet")
+            let responce = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(request)
+            if let tweets = responce as? [Tweet]{
+                filteredTweets = newTweets.filter {
+                    var match = true
+                    for tweet in tweets {
+                        if $0.id == tweet.unique {
+                            match = false
+                        }
+                    }
+                    return match
+                }
+                
+                print("filtered tweets: \(filteredTweets.count)")
+                
+                for tweetInfo in filteredTweets {
+                    if let context = ManagedDocument.sharedInstance.document?.managedObjectContext {
+                        _ = Tweet.tweetWithTweetInfo(tweetInfo, forSearchTerm: self.searchText!.lowercaseString, inManagedObjectContext: context)
+                    }
+                }
+            }
             
             print("search term info: \(self.searchText!.lowercaseString)")
             

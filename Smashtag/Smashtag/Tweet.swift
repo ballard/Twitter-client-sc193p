@@ -8,21 +8,31 @@
 
 import Foundation
 import CoreData
-
+import Twitter
 
 class Tweet: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
-    class func tweetWithTweetInfo(tweetInfo: String, forMention mention: Mention, inManagedObjectContext context: NSManagedObjectContext) -> Tweet? {
+    class func tweetWithTweetInfo(tweetInfo: Twitter.Tweet, forSearchTerm term: String, inManagedObjectContext context: NSManagedObjectContext) -> Tweet? {
         let request = NSFetchRequest(entityName: "Tweet")
         request.predicate = NSPredicate(format: "unique = %@", tweetInfo)
         if let tweet = (try? context.executeFetchRequest(request))?.first as? Tweet {
-            tweet.addMentionsObject(mention)
             return tweet
         } else {
             if let tweet = NSEntityDescription.insertNewObjectForEntityForName("Tweet", inManagedObjectContext: context) as? Tweet {
-                tweet.unique = tweetInfo
-                tweet.addMentionsObject(mention)
+                tweet.unique = tweetInfo.id
+                tweet.created = tweetInfo.created
+                
+                for hashtag in tweetInfo.hashtags {
+                    let mention = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "hashtag", forSearchTermInfo: term.lowercaseString, inManagedObjectContext: context)
+                    tweet.addToMentions(mention!)
+                }
+                
+                for userMention in tweetInfo.userMentions {
+                    let mention = Mention.mentionWithMentionInfo(userMention.keyword.lowercaseString, withMentionType: "userMention", forSearchTermInfo: term.lowercaseString, inManagedObjectContext: context)
+                    tweet.addToMentions(mention!)
+                }
+                
                 return tweet
             }
         }
