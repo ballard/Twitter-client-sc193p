@@ -41,8 +41,24 @@ class Tweet: NSManagedObject {
     
     override func prepareForDeletion() {
         super.prepareForDeletion()
-        print("deleteing object: \(self.unique!)")
+        if let mentions = self.mentions {
+            for item in mentions {
+                if let mention = item as? Mention{
+                    if mention.tweet?.unique! == self.unique!{
+                        mention.rate = Int(mention.rate!) - 1
+                        print("decreasing mention \(mention.value!) rate to \(mention.rate!)")
+                        if mention.rate! == 0 {
+                            self.managedObjectContext?.performBlockAndWait{
+                                self.managedObjectContext!.deleteObject(mention)
+                                print("deleting mension from tweet: \(mention.value!)")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+    
 }
 
 

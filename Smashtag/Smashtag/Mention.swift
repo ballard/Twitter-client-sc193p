@@ -15,7 +15,7 @@ class Mention: NSManagedObject {
     class func mentionWithMentionInfo(mentionInfo: String, withMentionType mentionType: String, forSearchTermInfo searchTermInfo: String, inManagedObjectContext context: NSManagedObjectContext) -> Mention? {
         
         let request = NSFetchRequest(entityName: "Mention")
-        request.predicate = NSPredicate(format: "value = %@ and term.value = %@", mentionInfo, searchTermInfo.lowercaseString)
+        request.predicate = NSPredicate(format: "value = %@ and term.value = %@", mentionInfo, searchTermInfo.lowercaseString, tweetInfo)
         
         if let mention = (try? context.executeFetchRequest(request))?.first as? Mention {
             mention.rate! = Int(mention.rate!) + 1

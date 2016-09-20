@@ -51,6 +51,27 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        
+        print("clearing database")
+        let clearRequest = NSFetchRequest(entityName: "Tweet")
+        let date = NSDate(timeIntervalSinceNow: -1200)
+        clearRequest.predicate = NSPredicate(format: "created < %@", date)
+        clearRequest.sortDescriptors = [
+            NSSortDescriptor(
+                key: "created",
+                ascending: false,
+                selector: nil)]
+        let timedOutTweets = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(clearRequest)
+        if let tweets = timedOutTweets as? [Tweet] {
+            for tweet in tweets {
+                print("deleting \(tweets.count) tweets")
+                print("timed out tweets: \(tweet.unique!), created: \(tweet.created!)")
+                ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(tweet)
+            }
+        }
+    }
+    
     private func updateHistory(input: String){
         
         let lowInput = input.lowercaseString
@@ -149,25 +170,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         ManagedDocument.sharedInstance.document?.managedObjectContext.performBlock {
             
             
-            let clearRequest = NSFetchRequest(entityName: "Tweet")
-            
-            let date = NSDate.init(timeIntervalSinceNow: -2*1000)
-            
 
-            clearRequest.predicate = NSPredicate(format: "created > %@", date)
-//            clearRequest.sortDescriptors = [
-//                NSSortDescriptor(
-//                    key: "created",
-//                    ascending: false,
-//                    selector: nil)]
-            let timedOutTweets = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(clearRequest)
-            if let tweets = timedOutTweets as? [Tweet] {
-                for tweet in tweets {
-                    print("timed out tweets: \(tweet.unique!), created: \(tweet.created!)")
-                }
-            }
-            
-            
             
             
             var filteredTweets : [Twitter.Tweet]

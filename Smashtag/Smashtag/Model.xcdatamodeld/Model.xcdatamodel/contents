@@ -14,11 +14,11 @@
     <entity name="Tweet" representedClassName=".Tweet" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="unique" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Mention" inverseName="tweet" inverseEntity="Mention" syncable="YES"/>
+        <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mention" inverseName="tweet" inverseEntity="Mention" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Mention" positionX="-14679" positionY="-1908" width="128" height="118"/>
-        <element name="SearchTerm" positionX="-14886" positionY="-1855" width="128" height="73"/>
-        <element name="Tweet" positionX="-14483" positionY="-1876" width="128" height="88"/>
+        <element name="Mention" positionX="-14679" positionY="-1890" width="128" height="118"/>
+        <element name="SearchTerm" positionX="-14879" positionY="-1891" width="128" height="73"/>
+        <element name="Tweet" positionX="-14877" positionY="-1771" width="128" height="88"/>
     </elements>
 </model>
