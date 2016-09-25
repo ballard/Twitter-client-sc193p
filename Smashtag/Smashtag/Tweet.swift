@@ -33,31 +33,33 @@ class Tweet: NSManagedObject {
                     tweet.addToMentions(mention!)
                 }
                 
+                print("tweet: \(tweet.unique!) mensions count: \(tweet.mentions?.count)")
+                
                 return tweet
             }
         }
         return nil
     }
     
-    override func prepareForDeletion() {
-        super.prepareForDeletion()
-        if let mentions = self.mentions {
-            print("tweet: \(self.unique!) mensions count: \(self.mentions!.count)")
-            for item in mentions {
-                if let mention = item as? Mention {
-                        mention.rate = Int(mention.rate!) - 1
-                        print("decreasing mention \(mention.value!) rate to \(mention.rate!) from tweet: \(self.unique!) for date \(self.created!)")
-//                        if mention.rate! == 0 {
-//                            self.managedObjectContext?.performBlockAndWait{
-//                                self.managedObjectContext!.deleteObject(mention)
-//                                print("deleting mension from tweet: \(mention.value!)")
-//                            }
-//                        }
-                    
-                }
-            }
-        }
-    }
+//    override func prepareForDeletion() {
+//        super.prepareForDeletion()
+//        if let mentions = self.mentions {
+//            print("tweet: \(self.unique!) mensions count: \(self.mentions!.count)")
+//            for item in mentions {
+//                if let mention = item as? Mention {
+//                        mention.rate = Int(mention.rate!) - 1
+//                        print("decreasing mention \(mention.value!) rate to \(mention.rate!) from tweet: \(self.unique!) for date \(self.created!)")
+////                        if mention.rate! == 0 {
+////                            self.managedObjectContext?.performBlockAndWait{
+////                                self.managedObjectContext!.deleteObject(mention)
+////                                print("deleting mension from tweet: \(mention.value!)")
+////                            }
+////                        }
+//                    
+//                }
+//            }
+//        }
+//    }
     
 }
 

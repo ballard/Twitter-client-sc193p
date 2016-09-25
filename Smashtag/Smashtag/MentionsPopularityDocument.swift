@@ -15,6 +15,7 @@ class ManagedDocument {
     var document : UIManagedDocument?
     
     init(){
+        
         let coreDataFileManager = NSFileManager.defaultManager()
         if let coreDataFileDir = coreDataFileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first {
             let url = coreDataFileDir.URLByAppendingPathComponent("TwitterDocument")

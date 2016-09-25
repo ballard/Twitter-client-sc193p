@@ -174,7 +174,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             
             print("clearing database")
             let clearRequest = NSFetchRequest(entityName: "Tweet")
-            let date = NSDate(timeIntervalSinceNow: -600)
+            let date = NSDate(timeIntervalSinceNow: (-1 * (60 * 15)))
             clearRequest.predicate = NSPredicate(format: "created < %@", date)
             clearRequest.sortDescriptors = [
                 NSSortDescriptor(
@@ -184,6 +184,14 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             let timedOutTweets = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(clearRequest)
             if let tweets = timedOutTweets as? [Tweet] {
                 for tweet in tweets {
+                    for object in tweet.mentions! {
+                        if let mention = object as? Mention{
+                            print("\(mention.value)")
+                            mention.rate! = Int(mention.rate!) - 1
+                        }
+                        
+                    }
+                    
                     print("deleting \(tweets.count) tweets")
                     print("timed out tweets: \(tweet.unique!), created: \(tweet.created!)")
                     ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(tweet)
