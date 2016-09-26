@@ -23,7 +23,7 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
         if let context = ManagedDocument.sharedInstance.document?.managedObjectContext where searchTerm?.characters.count > 0 {
             print("search term for table: \(searchTerm!.lowercaseString)")
             let request = NSFetchRequest(entityName: "Mention")
-            request.predicate = NSPredicate(format: "term.value = %@ and rate > 1", searchTerm!.lowercaseString)
+            request.predicate = NSPredicate(format: "term.value like[c] %@ and rate > 1", searchTerm!)
             request.sortDescriptors = [
                 NSSortDescriptor(
                     key: "type",
