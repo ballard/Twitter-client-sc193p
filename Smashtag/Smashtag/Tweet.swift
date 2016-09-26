@@ -24,12 +24,12 @@ class Tweet: NSManagedObject {
                 tweet.created = tweetInfo.created
                 
                 for hashtag in tweetInfo.hashtags {
-                    let mention = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "hashtag", forSearchTermInfo: term.lowercaseString, forTweetInfo: tweetInfo.id, inManagedObjectContext: context)
+                    let mention = Mention.mentionWithMentionInfo(hashtag.keyword, withMentionType: "hashtag", forSearchTermInfo: term, forTweetInfo: tweetInfo.id, inManagedObjectContext: context)
                     tweet.addToMentions(mention!)
                 }
                 
                 for userMention in tweetInfo.userMentions {
-                    let mention = Mention.mentionWithMentionInfo(userMention.keyword.lowercaseString, withMentionType: "userMention", forSearchTermInfo: term.lowercaseString, forTweetInfo: tweetInfo.id, inManagedObjectContext: context)
+                    let mention = Mention.mentionWithMentionInfo(userMention.keyword, withMentionType: "userMention", forSearchTermInfo: term, forTweetInfo: tweetInfo.id, inManagedObjectContext: context)
                     tweet.addToMentions(mention!)
                 }
                 

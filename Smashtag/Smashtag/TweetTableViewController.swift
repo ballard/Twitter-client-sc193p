@@ -167,7 +167,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                 
                 for tweetInfo in filteredTweets {
                     if let context = ManagedDocument.sharedInstance.document?.managedObjectContext {
-                        _ = Tweet.tweetWithTweetInfo(tweetInfo, forSearchTerm: self.searchText!.lowercaseString, inManagedObjectContext: context)
+                        _ = Tweet.tweetWithTweetInfo(tweetInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
                     }
                 }
             }
@@ -189,7 +189,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                             print("\(mention.value)")
                             mention.rate! = Int(mention.rate!) - 1
                         }
-                        
                     }
                     
                     print("deleting \(tweets.count) tweets")

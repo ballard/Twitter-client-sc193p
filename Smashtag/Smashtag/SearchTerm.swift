@@ -16,7 +16,7 @@ class SearchTerm: NSManagedObject {
     
     class func searchTermWithSearchTermInfo(searchTermInfo: String, inManagedObjectContext context: NSManagedObjectContext) -> SearchTerm? {
         let request = NSFetchRequest(entityName: "SearchTerm")
-        request.predicate = NSPredicate(format: "value = %@", searchTermInfo)
+        request.predicate = NSPredicate(format: "value matches[c] %@", searchTermInfo)
         if let searchTerm = (try? context.executeFetchRequest(request))?.first as? SearchTerm {
             return searchTerm
         } else {

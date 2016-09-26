@@ -15,7 +15,7 @@ class Mention: NSManagedObject {
     class func mentionWithMentionInfo(mentionInfo: String, withMentionType mentionType: String, forSearchTermInfo searchTermInfo: String, forTweetInfo tweetInfo: String, inManagedObjectContext context: NSManagedObjectContext) -> Mention? {
         
         let request = NSFetchRequest(entityName: "Mention") // add check tweet existence
-        request.predicate = NSPredicate(format: "value = %@ and term.value = %@ and SUBQUERY(tweet, $tweet, $tweet.unique = %@).@count == 0", mentionInfo.lowercaseString, searchTermInfo.lowercaseString, tweetInfo.lowercaseString)
+        request.predicate = NSPredicate(format: "value matches[c] %@ and term.value matches[c] %@ and SUBQUERY(tweets, $tweet, $tweet.unique = %@).@count == 0", mentionInfo, searchTermInfo, tweetInfo)
         if let mention = (try? context.executeFetchRequest(request))?.first as? Mention {
             print("mention \(mentionInfo) increased for tweet \(tweetInfo)")
             mention.rate! = Int(mention.rate!) + 1
@@ -26,7 +26,7 @@ class Mention: NSManagedObject {
                 mention.value = mentionInfo
                 mention.type = mentionType
                 mention.rate = 1
-                let searchTerm = SearchTerm.searchTermWithSearchTermInfo(searchTermInfo.lowercaseString, inManagedObjectContext: context)
+                let searchTerm = SearchTerm.searchTermWithSearchTermInfo(searchTermInfo, inManagedObjectContext: context)
                 mention.term = searchTerm
                 return mention
             }
