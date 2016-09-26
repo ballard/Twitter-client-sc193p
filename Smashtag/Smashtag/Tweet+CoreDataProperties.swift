@@ -2,7 +2,7 @@
 //  Tweet+CoreDataProperties.swift
 //  Smashtag
 //
-//  Created by Ivan on 19.09.16.
+//  Created by Ivan on 26.09.16.
 //  Copyright © 2016 Ivan Lazarev. All rights reserved.
 //
 
@@ -11,9 +11,15 @@ import CoreData
 
 extension Tweet {
 
-    @NSManaged var unique: String?
     @NSManaged var created: NSDate?
+    @NSManaged var unique: String?
     @NSManaged var mentions: NSSet?
+    @NSManaged var term: SearchTerm?
+
+}
+
+// MARK: Generated accessors for mentions
+extension Tweet {
 
     @objc(addMentionsObject:)
     @NSManaged func addToMentions(value: Mention)

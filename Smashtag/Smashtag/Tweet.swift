@@ -15,21 +15,26 @@ class Tweet: NSManagedObject {
 // Insert code here to add functionality to your managed object subclass
     class func tweetWithTweetInfo(tweetInfo: Twitter.Tweet, forSearchTerm term: String, inManagedObjectContext context: NSManagedObjectContext) -> Tweet? {
         let request = NSFetchRequest(entityName: "Tweet")
-        request.predicate = NSPredicate(format: "unique = %@", tweetInfo.id)
+        request.predicate = NSPredicate(format: "unique = %@ and term.value matches[c] %@", tweetInfo.id, term)
         if let tweet = (try? context.executeFetchRequest(request))?.first as? Tweet {
             return tweet
         } else {
             if let tweet = NSEntityDescription.insertNewObjectForEntityForName("Tweet", inManagedObjectContext: context) as? Tweet {
+                
                 tweet.unique = tweetInfo.id
                 tweet.created = tweetInfo.created
                 
+                let searchTerm = SearchTerm.searchTermWithSearchTermInfo(term, inManagedObjectContext: context)
+                tweet.term = searchTerm!
+                
                 for hashtag in tweetInfo.hashtags {
-                    let mention = Mention.mentionWithMentionInfo(hashtag.keyword, withMentionType: "hashtag", forSearchTermInfo: term, forTweetInfo: tweetInfo.id, inManagedObjectContext: context)
+                    print("inserting hashtag: \(hashtag.keyword)")
+                    let mention = Mention.mentionWithMentionInfo(hashtag.keyword, withMentionType: "Hashtags", forSearchTermInfo: term, forTweetInfo: tweetInfo.id, inManagedObjectContext: context)
                     tweet.addToMentions(mention!)
                 }
                 
                 for userMention in tweetInfo.userMentions {
-                    let mention = Mention.mentionWithMentionInfo(userMention.keyword, withMentionType: "userMention", forSearchTermInfo: term, forTweetInfo: tweetInfo.id, inManagedObjectContext: context)
+                    let mention = Mention.mentionWithMentionInfo(userMention.keyword, withMentionType: "User Mentions", forSearchTermInfo: term, forTweetInfo: tweetInfo.id, inManagedObjectContext: context)
                     tweet.addToMentions(mention!)
                 }
                 

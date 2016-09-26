@@ -2,7 +2,7 @@
 //  Mention+CoreDataProperties.swift
 //  Smashtag
 //
-//  Created by Ivan on 23.09.16.
+//  Created by Ivan on 26.09.16.
 //  Copyright © 2016 Ivan Lazarev. All rights reserved.
 //
 
@@ -11,28 +11,27 @@ import CoreData
 
 extension Mention {
 
-
     @NSManaged var rate: NSNumber?
     @NSManaged var type: String?
     @NSManaged var value: String?
     @NSManaged var term: SearchTerm?
-    @NSManaged var tweet: NSSet?
+    @NSManaged var tweets: NSSet?
 
 }
 
-// MARK: Generated accessors for tweet
+// MARK: Generated accessors for tweets
 extension Mention {
 
-    @objc(addTweetObject:)
-    @NSManaged func addToTweet(value: Tweet)
+    @objc(addTweetsObject:)
+    @NSManaged func addToTweets(value: Tweet)
 
-    @objc(removeTweetObject:)
-    @NSManaged func removeFromTweet(value: Tweet)
+    @objc(removeTweetsObject:)
+    @NSManaged func removeFromTweets(value: Tweet)
 
-    @objc(addTweet:)
-    @NSManaged func addToTweet(values: NSSet)
+    @objc(addTweets:)
+    @NSManaged func addToTweets(values: NSSet)
 
-    @objc(removeTweet:)
-    @NSManaged func removeFromTweet(values: NSSet)
+    @objc(removeTweets:)
+    @NSManaged func removeFromTweets(values: NSSet)
 
 }

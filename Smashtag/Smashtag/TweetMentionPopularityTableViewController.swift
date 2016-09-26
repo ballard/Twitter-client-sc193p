@@ -23,7 +23,7 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
         if let context = ManagedDocument.sharedInstance.document?.managedObjectContext where searchTerm?.characters.count > 0 {
             print("search term for table: \(searchTerm!.lowercaseString)")
             let request = NSFetchRequest(entityName: "Mention")
-            request.predicate = NSPredicate(format: "term.value like[c] %@ and rate > 1", searchTerm!)
+            request.predicate = NSPredicate(format: "term.value matches[c] %@ and rate > 1", searchTerm!)
             request.sortDescriptors = [
                 NSSortDescriptor(
                     key: "type",
@@ -68,6 +68,12 @@ class TweetMentionPopularityTableViewController: CoreDataTableViewController {
         
         // Configure the cell...
         if let mention = fetchedResultsController?.objectAtIndexPath(indexPath) as? Mention {
+            
+            for object in mention.tweets! {
+                if let tweet = object as? Tweet{
+                    print("tweet: \(tweet.unique!) in mention: \(mention.value!)")
+                }
+            }
 //            print("mention: \(mention)")
             var mentionValue : String?
             var mentionRate : Int?

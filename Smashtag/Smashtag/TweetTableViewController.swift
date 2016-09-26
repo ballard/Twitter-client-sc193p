@@ -151,6 +151,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             var filteredTweets : [Twitter.Tweet]
             
             let request = NSFetchRequest(entityName: "Tweet")
+            request.predicate = NSPredicate(format: "term.value matches[c] %@ ", self.searchText!)
             let responce = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(request)
             if let tweets = responce as? [Tweet]{
                 filteredTweets = newTweets.filter {
@@ -174,7 +175,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             
             print("clearing database")
             let clearRequest = NSFetchRequest(entityName: "Tweet")
-            let date = NSDate(timeIntervalSinceNow: (-1 * (60 * 15)))
+            let date = NSDate(timeIntervalSinceNow: (-1 * (60 * 10)))
             clearRequest.predicate = NSPredicate(format: "created < %@", date)
             clearRequest.sortDescriptors = [
                 NSSortDescriptor(
@@ -186,7 +187,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                 for tweet in tweets {
                     for object in tweet.mentions! {
                         if let mention = object as? Mention{
-                            print("\(mention.value)")
+                            print("\(mention.value!)")
                             mention.rate! = Int(mention.rate!) - 1
                         }
                     }
@@ -197,7 +198,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                 }
             }
             
-            print("search term info: \(self.searchText!.lowercaseString)")
+            print("search term info: \(self.searchText!)")
             
         }
         printDatabaseStatistics()

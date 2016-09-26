@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A323" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A323" minimumToolsVersion="Xcode 7.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Mention" representedClassName=".Mention" syncable="YES">
         <attribute name="rate" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
@@ -10,15 +10,17 @@
     <entity name="SearchTerm" representedClassName=".SearchTerm" syncable="YES">
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="mensions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mention" inverseName="term" inverseEntity="Mention" syncable="YES"/>
+        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="term" inverseEntity="Tweet" syncable="YES"/>
     </entity>
     <entity name="Tweet" representedClassName=".Tweet" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="unique" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mention" inverseName="tweets" inverseEntity="Mention" syncable="YES"/>
+        <relationship name="term" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SearchTerm" inverseName="tweets" inverseEntity="SearchTerm" syncable="YES"/>
     </entity>
     <elements>
         <element name="Mention" positionX="-14679" positionY="-1890" width="128" height="118"/>
-        <element name="SearchTerm" positionX="-14879" positionY="-1891" width="128" height="73"/>
-        <element name="Tweet" positionX="-14877" positionY="-1771" width="128" height="88"/>
+        <element name="SearchTerm" positionX="-14870" positionY="-1960" width="128" height="88"/>
+        <element name="Tweet" positionX="-14877" positionY="-1771" width="128" height="103"/>
     </elements>
 </model>
