@@ -151,7 +151,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             var filteredTweets : [Twitter.Tweet]
             
             let request = NSFetchRequest(entityName: "Tweet")
-            request.predicate = NSPredicate(format: "term.value matches[c] %@ ", self.searchText!)
+            request.predicate = NSPredicate(format: "term.value matches[c] %@", self.searchText!)
             let responce = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(request)
             if let tweets = responce as? [Tweet]{
                 filteredTweets = newTweets.filter {
@@ -175,7 +175,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             
             print("clearing database")
             let clearRequest = NSFetchRequest(entityName: "Tweet")
-            let date = NSDate(timeIntervalSinceNow: (-1 * (60 * 10)))
+            let date = NSDate(timeIntervalSinceNow: (-1 * (60 * 60)))
             clearRequest.predicate = NSPredicate(format: "created < %@", date)
             clearRequest.sortDescriptors = [
                 NSSortDescriptor(
