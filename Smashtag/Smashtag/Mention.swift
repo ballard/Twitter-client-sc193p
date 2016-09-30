@@ -15,14 +15,15 @@ class Mention: NSManagedObject {
     class func mentionWithMentionInfo(mentionInfo: String, withMentionType mentionType: String, forSearchTermInfo searchTermInfo: String, forTweetInfo tweetInfo: String, inManagedObjectContext context: NSManagedObjectContext) -> Mention? {
         
         let request = NSFetchRequest(entityName: "Mention") // add check tweet existence
-        request.predicate = NSPredicate(format: "value matches[c] %@ and term.value matches[c] %@ and SUBQUERY(tweets, $tweet, $tweet.unique = %@).@count == 0", mentionInfo, searchTermInfo, tweetInfo)
+//        request.predicate = NSPredicate(format: "value == %@ and term.value == %@ and SUBQUERY(tweets, $tweet, $tweet.unique == %@).@count == 0", mentionInfo, searchTermInfo, tweetInfo)
+        request.predicate = NSPredicate(format: "value == %@ and term.value == %@ and none tweets.unique matches[c] %@", mentionInfo, searchTermInfo, tweetInfo) // none or any???
         if let mention = (try? context.executeFetchRequest(request))?.first as? Mention {
-            print("mention \(mentionInfo) increased for tweet \(tweetInfo)")
+//            print("mention \(mentionInfo) increased for tweet \(tweetInfo)")
             mention.rate! = Int(mention.rate!) + 1
             return mention
         } else {
             if let mention = NSEntityDescription.insertNewObjectForEntityForName("Mention", inManagedObjectContext: context) as? Mention{
-                print("mention \(mentionInfo) added for tweet \(tweetInfo)")
+//                print("mention \(mentionInfo) added for tweet \(tweetInfo)")
                 mention.value = mentionInfo
                 mention.type = mentionType
                 mention.rate = 1
@@ -38,6 +39,6 @@ class Mention: NSManagedObject {
     
     override func prepareForDeletion() {
         super.prepareForDeletion()
-        print("deleting mention \(self.value!)")
+//        print("deleting mention \(self.value!)")
     }
 }

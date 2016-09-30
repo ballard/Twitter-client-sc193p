@@ -151,7 +151,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             var filteredTweets : [Twitter.Tweet]
             
             let request = NSFetchRequest(entityName: "Tweet")
-            request.predicate = NSPredicate(format: "term.value matches[c] %@", self.searchText!)
+            request.predicate = NSPredicate(format: "term.value == %@", self.searchText!.lowercaseString)
             let responce = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(request)
             if let tweets = responce as? [Tweet]{
                 filteredTweets = newTweets.filter {
@@ -168,35 +168,35 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                 
                 for tweetInfo in filteredTweets {
                     if let context = ManagedDocument.sharedInstance.document?.managedObjectContext {
-                        _ = Tweet.tweetWithTweetInfo(tweetInfo, forSearchTerm: self.searchText!, inManagedObjectContext: context)
+                        _ = Tweet.tweetWithTweetInfo(tweetInfo, forSearchTerm: self.searchText!.lowercaseString, inManagedObjectContext: context)
                     }
                 }
             }
             
-            print("clearing database")
-            let clearRequest = NSFetchRequest(entityName: "Tweet")
-            let date = NSDate(timeIntervalSinceNow: (-1 * (60 * 60)))
-            clearRequest.predicate = NSPredicate(format: "created < %@", date)
-            clearRequest.sortDescriptors = [
-                NSSortDescriptor(
-                    key: "created",
-                    ascending: false,
-                    selector: nil)]
-            let timedOutTweets = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(clearRequest)
-            if let tweets = timedOutTweets as? [Tweet] {
-                for tweet in tweets {
-                    for object in tweet.mentions! {
-                        if let mention = object as? Mention{
-                            print("\(mention.value!)")
-                            mention.rate! = Int(mention.rate!) - 1
-                        }
-                    }
-                    
-                    print("deleting \(tweets.count) tweets")
-                    print("timed out tweets: \(tweet.unique!), created: \(tweet.created!)")
-                    ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(tweet)
-                }
-            }
+//            print("clearing database")
+//            let clearRequest = NSFetchRequest(entityName: "Tweet")
+//            let date = NSDate(timeIntervalSinceNow: (-1 * (60 * 60)))
+//            clearRequest.predicate = NSPredicate(format: "created < %@", date)
+//            clearRequest.sortDescriptors = [
+//                NSSortDescriptor(
+//                    key: "created",
+//                    ascending: false,
+//                    selector: nil)]
+//            let timedOutTweets = try? ManagedDocument.sharedInstance.document?.managedObjectContext.executeFetchRequest(clearRequest)
+//            if let tweets = timedOutTweets as? [Tweet] {
+//                for tweet in tweets {
+//                    for object in tweet.mentions! {
+//                        if let mention = object as? Mention{
+//                            print("\(mention.value!)")
+//                            mention.rate! = Int(mention.rate!) - 1
+//                        }
+//                    }
+//                    
+////                    print("deleting \(tweets.count) tweets")
+////                    print("timed out tweets: \(tweet.unique!), created: \(tweet.created!)")
+//                    ManagedDocument.sharedInstance.document!.managedObjectContext.deleteObject(tweet)
+//                }
+//            }
             
             print("search term info: \(self.searchText!)")
             
