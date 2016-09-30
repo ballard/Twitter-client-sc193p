@@ -15,7 +15,7 @@ class Tweet: NSManagedObject {
 // Insert code here to add functionality to your managed object subclass
     class func tweetWithTweetInfo(tweetInfo: Twitter.Tweet, forSearchTerm term: String, inManagedObjectContext context: NSManagedObjectContext) -> Tweet? {
         let request = NSFetchRequest(entityName: "Tweet")
-        request.predicate = NSPredicate(format: "unique == %@ and term.value == %@", tweetInfo.id, term)
+        request.predicate = NSPredicate(format: "unique matches[cd] %@ and any mentions.term.value matches[cd] %@", tweetInfo.id, term)
         if let tweet = (try? context.executeFetchRequest(request))?.first as? Tweet {
             return tweet
         } else {
@@ -24,12 +24,9 @@ class Tweet: NSManagedObject {
                 tweet.unique = tweetInfo.id
                 tweet.created = tweetInfo.created
                 
-                let searchTerm = SearchTerm.searchTermWithSearchTermInfo(term, inManagedObjectContext: context)
-                tweet.term = searchTerm!
-                
                 for hashtag in tweetInfo.hashtags {
 //                    print("inserting hashtag: \(hashtag.keyword)")
-                    let mention = Mention.mentionWithMentionInfo(hashtag.keyword.lowercaseString, withMentionType: "Hashtags", forSearchTermInfo: term, forTweetInfo: tweetInfo.id, inManagedObjectContext: context)
+                    let mention = Mention.mentionWithMentionInfo(hashtag.keyword, withMentionType: "Hashtags", forSearchTermInfo: term, forTweetInfo: tweetInfo.id, inManagedObjectContext: context)
                     tweet.addToMentions(mention!)
                 }
                 

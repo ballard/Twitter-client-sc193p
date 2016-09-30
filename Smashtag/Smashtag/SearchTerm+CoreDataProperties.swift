@@ -13,7 +13,6 @@ extension SearchTerm {
 
     @NSManaged var value: String?
     @NSManaged var mensions: NSSet?
-    @NSManaged var tweets: NSSet?
 
 }
 
@@ -31,22 +30,5 @@ extension SearchTerm {
 
     @objc(removeMensions:)
     @NSManaged func removeFromMensions(values: NSSet)
-
-}
-
-// MARK: Generated accessors for tweets
-extension SearchTerm {
-
-    @objc(addTweetsObject:)
-    @NSManaged func addToTweets(value: Tweet)
-
-    @objc(removeTweetsObject:)
-    @NSManaged func removeFromTweets(value: Tweet)
-
-    @objc(addTweets:)
-    @NSManaged func addToTweets(values: NSSet)
-
-    @objc(removeTweets:)
-    @NSManaged func removeFromTweets(values: NSSet)
 
 }

@@ -14,7 +14,6 @@ extension Tweet {
     @NSManaged var created: NSDate?
     @NSManaged var unique: String?
     @NSManaged var mentions: NSSet?
-    @NSManaged var term: SearchTerm?
 
 }
 
