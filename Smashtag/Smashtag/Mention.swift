@@ -16,7 +16,9 @@ class Mention: NSManagedObject {
         
         let request = NSFetchRequest(entityName: "Mention") // add check tweet existence
 //        request.predicate = NSPredicate(format: "value == %@ and term.value == %@ and SUBQUERY(tweets, $tweet, $tweet.unique == %@).@count == 0", mentionInfo, searchTermInfo, tweetInfo)
-        request.predicate = NSPredicate(format: "value matches[cd] %@ and term.value matches[cd] %@ and none tweets.unique matches[c] %@", mentionInfo, searchTermInfo, tweetInfo) // none or any???
+//        request.predicate = NSPredicate(format: "value matches[cd] %@ and term.value matches[cd] %@ and none tweets.unique matches[c] %@", mentionInfo, searchTermInfo, tweetInfo) // none or any???
+        
+        request.predicate = NSPredicate(format: "value matches[cd] %@ and term.value matches[cd] %@", mentionInfo, searchTermInfo) // none or any???
         if let mention = (try? context.executeFetchRequest(request))?.first as? Mention {
 //            print("mention \(mentionInfo) increased for tweet \(tweetInfo)")
             mention.rate! = Int(mention.rate!) + 1

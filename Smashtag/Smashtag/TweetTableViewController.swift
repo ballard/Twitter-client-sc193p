@@ -175,7 +175,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             
             print("clearing database")
             let clearRequest = NSFetchRequest(entityName: "Tweet")
-            let date = NSDate(timeIntervalSinceNow: (-1 * (60 * 60)))
+            let date = NSDate(timeIntervalSinceNow: (-1 * (60 * 60 * 24 * 7)))
             clearRequest.predicate = NSPredicate(format: "created < %@", date)
             clearRequest.sortDescriptors = [
                 NSSortDescriptor(
